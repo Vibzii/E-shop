@@ -11,6 +11,13 @@ html {
 INCLUDE STYLES AND COMPONENTS
 ===================== */
 /* ================== HELPERS  =================== */
+.btn-custom-pink {
+    background-color: #fbd6cd; /* Replace with your custom pink color */
+    border-color: #fbd6cd; /* Replace with your custom pink color */
+    color: white; /* Ensure the text color contrasts well with the background */
+
+}
+
 a:hover {
   text-decoration: none;
 }
@@ -843,7 +850,11 @@ a[class*=card]:hover .title {
   margin-bottom: 0;
 }
 [class*=card-product] .img-wrap {
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 [class*=card-product] .img-wrap img {
@@ -1360,7 +1371,7 @@ a[class*=card]:hover .title {
 }
 .gallery-wrap .img-big-wrap img {
   height: 450px;
-  width: auto;
+  width: 100%;
   display: inline-block;
 }
 .gallery-wrap .thumbs-wrap {
