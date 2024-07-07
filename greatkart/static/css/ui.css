@@ -11,10 +11,23 @@ html {
 INCLUDE STYLES AND COMPONENTS
 ===================== */
 /* ================== HELPERS  =================== */
+
+.list-group-item-pink.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #fbd6cd;
+  border-color: #fbd6cd;
+}
+
+.btn-outline-pink {
+  color: #93613f;
+  border-color: #fbd6cd;
+}
+
 .btn-custom-pink {
     background-color: #fbd6cd; /* Replace with your custom pink color */
     border-color: #fbd6cd; /* Replace with your custom pink color */
-    color: white; /* Ensure the text color contrasts well with the background */
+    color: #93613f; /* Ensure the text color contrasts well with the background */
 
 }
 
