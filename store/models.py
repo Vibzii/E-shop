@@ -29,6 +29,9 @@ class VariationManager(models.Manager):
     def sizes(self):
         return super(VariationManager, self).filter(variation_category='size', is_active=True)
 
+    def sets(self):
+        return super(VariationManager, self).filter(variation_category='sets', is_active=True)
+
 
 variation_category_choice = (
     ("color", 'color'),

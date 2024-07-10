@@ -11,6 +11,8 @@ html {
 INCLUDE STYLES AND COMPONENTS
 ===================== */
 /* ================== HELPERS  =================== */
+#cssmenu {position:fixed;}
+
 
 .list-group-item-pink.active {
   z-index: 2;

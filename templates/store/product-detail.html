@@ -45,17 +45,19 @@
 							</select>
 						</div>
 					</div> <!-- row.// -->
+					<!--
 					<div class="row">
 						<div class="item-option-select">
-							<h6>Select Size</h6>
+							<h6>Select Sets</h6>
 							<select name = "size" class="form-control" required>
 								<option value="" disabled selected>Select</option>
-								{% for i in single_product.variation_set.sizes %}
+								{% for i in single_product.variation_set.sets %}
 									<option value="{{i.variation_value | lower}}">{{i.variation_value}}</option>
 								{% endfor %}
 							</select>
 						</div>
-					</div> <!-- row.// -->
+					</div> -->
+					 <!-- row.// -->
 					<hr>
 					{% if single_product.stock <= 0 %}
 						<h5 class="text-danger">Out of Stock</h5>
