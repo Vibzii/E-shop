@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-l__fgn@+^09j8xx*5o@^t*v8!gmp1&(v&_8_k1#2zaexcw#up^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'store',
     'carts',
     'orders',
+    'paypal.standard.ipn',
+
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'greatkart.urls'
 
@@ -116,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 
@@ -163,3 +166,18 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
 
+#Paypal Settings
+
+PAYPAL_RECEIVER_EMAIL = 'sb-tv6nf31639132@business.example.com'
+PAYPAL_TEST = True  # Set to False for production
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://7744-93-208-211-238.ngrok-free.app',
+
+]
+
+
+PAYPAL_BUY_BUTTON_IMAGE = os.getenv('PAYPAL_BUTTON_IMAGE')
+
+if not PAYPAL_BUY_BUTTON_IMAGE:
+    raise ImproperConfiguration("PAYPAL_BUTTON_IMAGE environment variable not set")

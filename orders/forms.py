@@ -1,5 +1,7 @@
 from django import forms
 from .models import Order
+from django.utils.html import format_html
+from paypal.standard.forms import PayPalPaymentsForm
 
 class OrderForm(forms.ModelForm):
     class Meta:

@@ -1,8 +1,11 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('place_order/', views.place_order, name="place_order"),
-    path('payments/', views.payments, name="payments"),
+
+    path('payment_product/', views.payment_product, name='payment-product'),
+    path('payment-success/<int:order_number>/', views.PaymentSuccessful, name='payment-success'),
+    path('payment-failed/', views.paymentFailed, name='payment-failed'),
+    path('paypal/', include("paypal.standard.ipn.urls")),
 
 ]
