@@ -1,75 +1,135 @@
 {% load static %}
+<div class="shipping-banner text-center py-2">
+    Versand Im Ganz Deutschland
+</div>
+<header class="py-3">
+        <div class="container container-navbar">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="{% url 'home' %}" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                    <img class="logo" width="200" src="{% static './images/logo_title.jpeg' %}">
+                </a>
 
+                <form class="col-12 col-lg-auto px-5 mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'search' %}" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." aria-label="Search" name="keyword">
+                        <button class="btn btn-custom-pink"><i class="fas fa-search"></i></button>
+                    </div>
+                </form>
 
-<header class="section-header">
+                <div class="text-end">
+                    {% if user.id is None %}
+                        <a href="{% url 'login' %}"><button type="button" class="btn btn-outline-pink me-2">Login</button></a>
+                        <a href="{% url 'register' %}"><button type="button" class="btn btn-custom-pink">Sign-up</button></a>
+                    {% else %}
+                        <a href="{% url 'dashboard' %}"><button type="button" class="btn btn-outline-pink me-2">My Profile</button></a>
+                        <a href="{% url 'logout' %}"><button type="button" class="btn btn-custom-pink me-2">Logout</button></a>
+                    {% endif %}
 
+                    <a href="{% url 'cart' %}" class="shopping-bag-container position-relative">
+                        <div class="icon-circle">
+                            <i class="fas fa-shopping-bag fa-2xl" style="color: #93613f;"></i>
+                        </div>
+                        <span class="badge badge-counter">{{cart_count}}</span>
+                        <!-- Cart Preview -->
+                        <div class="cart-preview">
+                            {% if cart_items %}
+                                <table class="table table-borderless table-striped align-middle">
+                                    <thead class="text-muted">
+                                        <tr class="small text-uppercase">
+                                            <th scope="col">Product</th>
+                                            <th scope="col" class="text-center" width="150">Quantity</th>
+                                            <th scope="col" class="text-center" width="120">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cart_item in cart_items %}
+                                        <tr>
+                                            <td>
+                                                {% if cart_item.variation.all %}
+                                                    {% for item in cart_item.variation.all %}
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0">
+                                                                <img src="{{ item.image.url }}" class="img-fluid img-thumbnail square-image" alt="{{ cart_item.product.product_name }}" style="max-width: 80px;">
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <a href="{{ cart_item.variation.image.url}}" class="fw-bold text-dark text-decoration-none">{{ cart_item.product.product_name }}</a>
+                                                                <p class="text-muted small mb-0">
+                                                                    {{ item.variation_category|capfirst }}: {{ item.variation_value|capfirst }}<br>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <var>{{ cart_item.quantity }}</var>
+                                                </div>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <div class="price-wrap">
+                                                    <var>{{ cart_item.sub_total }}€</var>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <h5 class="text-center py-3" style="color:black;">Your cart is empty</h5>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+  <header>
 
-<section class="header-main border-bottom">
-	<div class="container">
-<div class="row align-items-center">
-	<div class="col-lg-2 col-md-3 col-6">
-		<a href="{% url 'home' %}" class="brand-wrap">
-			<img class="logo" src=" {% static './images/logo_title.jpeg' %}">
-		</a> <!-- brand-wrap.// -->
-	</div>
-	<div class="col-lg col-sm col-md col-6 flex-grow-0">
-		<div class="category-wrap dropdown d-inline-block float-right">
-			<button type="button" class="btn btn-custom-pink dropdown-toggle" data-toggle="dropdown">
-				<i class="fa fa-bars"></i> All category
-			</button>
-			<div class="dropdown-menu">
-					<a class="dropdown-item" href="{% url 'store' %}">All Products </a>
-				{% for category in links%}
-					<a class="dropdown-item" href="{{category.get_url}}">{{category.category_name}} </a>
-				{% endfor %}
-			</div>
-		</div>  <!-- category-wrap.// -->
-	</div> <!-- col.// -->
-	<a href="{% url 'store' %}" class="btn btn-outline-pink">Store</a>
-	<div class="col-lg  col-md-6 col-sm-12 col">
-		<form action="{% url 'search' %}" class="search" method="GET">
-			<div class="input-group w-100">
-			    <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword">
+        <div class="px-3 py-2 border-bottom border-top text-center bg-light">
+          <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center">
 
-			    <div class="input-group-append">
-			      <button class="btn btn-custom-pink" type="submit">
-			        <i class="fa fa-search"></i>
-			      </button>
-			    </div>
-		    </div>
-		</form> <!-- search-wrap .end// -->
-	</div> <!-- col.// -->
-	<div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
-				<div class="d-flex justify-content-end mb-3 mb-lg-0">
-					{% if user.id is None %}
-					<div class="widget-header">
-						<small class="title text-muted">Welcome guest!</small>
-						<div>
-							<a href="{% url 'login' %}">Sign in</a> <span class="dark-transp"> | </span>
-							<a href="{% url 'register' %}"> Register</a>
-						</div>
-					</div>
-					{% else %}
-					<div class="widget-header">
-						<small class="title text-muted">Welcome {{user.first_name}}!</small>
-						<div>
-							<a href="{% url 'dashboard' %}">Dashboard</a> <span class="dark-transp"> | </span>
-							<a href="{% url 'logout' %}"> Logout</a>
-						</div>
-					</div>
+              <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small mx-auto">
+                <li>
+                  <a href="{% url 'home' %}" class="nav-link text-black">
+                    <svg class="bi d-block mx-auto mb-1" xmlns="http://www.w3.org/2000/svg" height="32" width="36" viewBox="0 0 576 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#93613f" d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+                    Home
+                  </a>
+                </li>
+                 <li class="dropdown">
+                  <a href="{% url 'store' %}" class="nav-link text-black toggle-dropdown">
+                    <svg class="bi d-block mx-auto mb-1" xmlns="http://www.w3.org/2000/svg" height="32" width="36" viewBox="0 0 576 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#93613f" d="M547.6 103.8L490.3 13.1C485.2 5 476.1 0 466.4 0L109.6 0C99.9 0 90.8 5 85.7 13.1L28.3 103.8c-29.6 46.8-3.4 111.9 51.9 119.4c4 .5 8.1 .8 12.1 .8c26.1 0 49.3-11.4 65.2-29c15.9 17.6 39.1 29 65.2 29c26.1 0 49.3-11.4 65.2-29c15.9 17.6 39.1 29 65.2 29c26.2 0 49.3-11.4 65.2-29c16 17.6 39.1 29 65.2 29c4.1 0 8.1-.3 12.1-.8c55.5-7.4 81.8-72.5 52.1-119.4zM499.7 254.9c0 0 0 0-.1 0c-5.3 .7-10.7 1.1-16.2 1.1c-12.4 0-24.3-1.9-35.4-5.3L448 384l-320 0 0-133.4c-11.2 3.5-23.2 5.4-35.6 5.4c-5.5 0-11-.4-16.3-1.1l-.1 0c-4.1-.6-8.1-1.3-12-2.3L64 384l0 64c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-64 0-131.4c-4 1-8 1.8-12.3 2.3z"/></svg>
+                      Store
+                  </a>
+                  <a href="" class="toggle-dropdown">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" fill="#93613f" viewBox="0 0 512 512">
+                    <path d="M256 294.1L155.5 193.6c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l120 120c9.4 9.4 24.6 9.4 33.9 0l120-120c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L256 294.1z"/>
+                    </svg>
+                  </a>
+                  <div class="dropdown-content">
+                        <a class="dropdown-item" href="{% url 'store' %}">All Products</a>
+                    {% for category in links%}
+                        <a class="dropdown-item" href="{{category.get_url}}">{{category.category_name}} </a>
+                    {% endfor %}
+                  </div>
+                </li>
+                <li>
+                  <a href="{% url 'faq' %}" class="nav-link text-black">
+                    <svg class="bi d-block mx-auto mb-1" xmlns="http://www.w3.org/2000/svg" height="32" width="32" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#93613f" d="M64 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L192 64zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zM64 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48-208a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z"/></svg>
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'contact' %}" class="nav-link text-black">
+                    <svg class="bi d-block mx-auto mb-1" xmlns="http://www.w3.org/2000/svg" height="32" width="32" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#93613f" d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
+                    Contact
+                  </a>
+                </li>
+              </ul>
 
-					{% endif %}
-					<a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
-						<div class="icon icon-sm rounded-circle border"><i class="fas fa-shopping-bag fa-lg"></i></div>
-						<span class="badge badge-pill badge-danger notify">{{cart_count}}</span>
-					</a>
-				</div> <!-- widgets-wrap.// -->
-			</div> <!-- col.// -->
-</div> <!-- row.// -->
-	</div> <!-- container.// -->
-</section> <!-- header-main .// -->
+            </div>
+          </div>
+        </div>
+  </header>
 
-
-
-
-</header> <!-- section-header.// -->

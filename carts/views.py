@@ -3,6 +3,7 @@ from store.models import Product, Variation
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 def _cart_id(request):
@@ -12,23 +13,29 @@ def _cart_id(request):
     return cart
 
 
-def add_cart(request, product_id):
+def add_cart(request, product_id, item_quantity=1):
+
     current_user = request.user
     product = Product.objects.get(id=product_id)
+    #redirection is set in HTML Product Detail
+    redirect_url = request.GET.get('next', 'cart')
     if current_user.is_authenticated:
         product_variation = []
-
         if request.method == "POST":
+            try:
+                item_quantity = int(request.POST.get('quantity'))
+            except:
+                pass
             for item in request.POST:
                 key = item
                 value = request.POST[key]
+
                 try:
                     variation = Variation.objects.get(product=product, variation_category__iexact=key,
                                                       variation_value__iexact=value)
                     product_variation.append(variation)
                 except:
                     pass
-
 
 
         is_cart_items_exists = CartItem.objects.filter(product=product, user=current_user).exists()
@@ -45,11 +52,17 @@ def add_cart(request, product_id):
                 index = ex_var_list.index(product_variation)
                 item_id = id[index]
                 item = CartItem.objects.get(product=product, id=item_id)
-                item.quantity += 1
+                item.quantity += item_quantity
+                stock_quantity = 0
+                for i in item.variation.all():
+                    if i.stock > stock_quantity:
+                        stock_quantity = i.stock
+                if stock_quantity < item.quantity:
+                    item.quantity = stock_quantity
                 item.save()
 
             else:
-                item = CartItem.objects.create(product=product, quantity=1, user=current_user)
+                item = CartItem.objects.create(product=product, quantity=item_quantity, user=current_user)
                 if len(product_variation) > 0:
                     item.variation.clear()
                     item.variation.add(*product_variation)
@@ -58,7 +71,7 @@ def add_cart(request, product_id):
         else:
             cart_item = CartItem.objects.create(
                 product=product,
-                quantity=1,
+                quantity=item_quantity,
                 user=current_user,
             )
             if len(product_variation) > 0:
@@ -66,7 +79,9 @@ def add_cart(request, product_id):
                 cart_item.variation.add(*product_variation)
 
             cart_item.save()
-        return redirect('cart')
+
+        return redirect(redirect_url)
+
 
     #If Not Authenticated
     else:
@@ -74,6 +89,10 @@ def add_cart(request, product_id):
         product_variation = []
 
         if request.method == "POST":
+            try:
+                item_quantity = int(request.POST.get('quantity'))
+            except:
+                pass
             for item in request.POST:
                 key= item
                 value = request.POST[key]
@@ -105,11 +124,17 @@ def add_cart(request, product_id):
                 index = ex_var_list.index(product_variation)
                 item_id = id[index]
                 item = CartItem.objects.get(product=product, id=item_id)
-                item.quantity +=1
+                item.quantity +=item_quantity
+                stock_quantity = 0
+                for i in item.variation.all():
+                    if i.stock > stock_quantity:
+                        stock_quantity = i.stock
+                if stock_quantity < item.quantity:
+                    item.quantity = stock_quantity
                 item.save()
 
             else:
-                item = CartItem.objects.create(product=product, quantity=1, cart=cart)
+                item = CartItem.objects.create(product=product, quantity=item_quantity, cart=cart)
                 if len(product_variation)>0:
                     item.variation.clear()
                     item.variation.add(*product_variation)
@@ -118,7 +143,7 @@ def add_cart(request, product_id):
         else:
             cart_item = CartItem.objects.create(
                 product = product,
-                quantity=1,
+                quantity=item_quantity,
                 cart=cart,
             )
             if len(product_variation)>0:
@@ -126,7 +151,7 @@ def add_cart(request, product_id):
                 cart_item.variation.add(*product_variation)
 
             cart_item.save()
-        return redirect('cart')
+        return redirect(redirect_url)
 
 def remove_cart(request, product_id, cart_item_id):
 
@@ -157,10 +182,22 @@ def remove_cart_item(request, product_id, cart_item_id):
     cart_item.delete()
 
     return redirect('cart')
+def update_cart_quantity(request, product_id, cart_item_id):
+
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(product=product, user=request.user, id=cart_item_id)
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
+        cart_item.quantity = int(quantity)
+        cart_item.save()
+    return redirect('cart')
 
 
-
-def cart(request, total=0, quantity=0, cart_items=None):
+def cart(request, total=0, quantity=0, cart_items=None, max_shipping=0, grand_total=0):
 
 
     try:
@@ -172,28 +209,32 @@ def cart(request, total=0, quantity=0, cart_items=None):
 
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-
+        max_shipping = 0
         for cart_item in cart_items:
-            total += (cart_item.product.price * cart_item.quantity)
-            quantity += cart_item.quantity
+            for item in cart_item.variation.all():
+                total += (item.variation_price * cart_item.quantity)
+                quantity += cart_item.quantity
 
-        tax = (0 * total)/100
-        grand_total = total + tax
+            if cart_item.product.shipping > max_shipping:
+                max_shipping= cart_item.product.shipping
 
+        #tax = (0 * total)/100
+        grand_total = total + max_shipping
     except ObjectDoesNotExist:
         pass
     context = {
-        'total': grand_total,
+        'total': total,
+        'grand_total': grand_total,
         'quantity': quantity,
         'cart_items': cart_items,
+        'shipping_cost': max_shipping,
         #'tax': tax,
         #'grand_total': grand_total
     }
 
 
     return render(request, 'store/cart.html', context)
-@login_required(login_url='login')
-def checkout(request, total=0, quantity=0, cart_items=None):
+def checkout(request, total=0, quantity=0,grand_total=0, cart_items=None, max_shipping=0):
     try:
         tax=0
         grand_total =0
@@ -204,17 +245,26 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
 
+        max_shipping = 0
         for cart_item in cart_items:
-            total += (cart_item.product.price * cart_item.quantity)
-            quantity += cart_item.quantity
+            for item in cart_item.variation.all():
+                total += (item.variation_price * cart_item.quantity)
+                quantity += cart_item.quantity
 
-        tax = (0 * total)/100
-        grand_total = total + tax
+            if cart_item.product.shipping > max_shipping:
+                max_shipping = cart_item.product.shipping
+
+
+        #tax = (0 * total) / 100
+        grand_total = total + max_shipping
+
 
     except ObjectDoesNotExist:
         pass
     context = {
-        'total': grand_total,
+        'total': total,
+        'grand_total': grand_total,
+        'shipping': max_shipping,
         'quantity': quantity,
         'cart_items': cart_items,
         #'tax': tax,

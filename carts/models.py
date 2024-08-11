@@ -13,7 +13,7 @@ class Cart(models.Model):
         return self.cart_id
 
 class CartItem(models.Model):
-    user= models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variation = models.ManyToManyField(Variation, blank=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
@@ -23,7 +23,10 @@ class CartItem(models.Model):
 
 
     def sub_total(self):
-        return self.product.price * self.quantity
+
+        total_variation_price = sum(variation.variation_price for variation in self.variation.all())
+        total_price = total_variation_price if total_variation_price > 0 else self.product.price
+        return total_price * int(self.quantity)
 
 
     def __unicode__(self):

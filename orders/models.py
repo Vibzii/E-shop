@@ -29,17 +29,25 @@ class Order(models.Model):
     order_number = models.CharField(max_length=20)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=15, blank=True)
     email = models.EmailField(max_length=50)
     address_line_1 = models.CharField(max_length=50)
     address_line_2 = models.CharField(max_length=50, blank=True)
     country = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
+    state = models.CharField(max_length=50, blank=True)
     zipcode = models.CharField(max_length=20)
     city = models.CharField(max_length=50)
-    order_note = models.CharField(max_length=500, blank=True)
-    order_total = models.FloatField()
-    tax = models.FloatField()
+    order_note = models.TextField(max_length=1000, blank=True)
+    shipping_name = models.CharField(max_length=100, blank=True)
+    shipping_address_line_1 = models.CharField(max_length=50, blank=True)
+    shipping_address_line_2 = models.CharField(max_length=50, blank=True)
+    shipping_country = models.CharField(max_length=50, blank=True)
+    shipping_state = models.CharField(max_length=50, blank=True)
+    shipping_zipcode = models.CharField(max_length=20, blank=True)
+    shipping_city = models.CharField(max_length=50, blank=True)
+    order_total = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    tax = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=10, choices=STATUS, default='New')
     ip = models.CharField(blank=True, max_length=20)
     is_ordered = models.BooleanField(default=False)
@@ -64,10 +72,14 @@ class OrderProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variations = models.ManyToManyField(Variation, blank=True)
     quantity = models.IntegerField()
-    product_price = models.FloatField()
+    product_price = models.DecimalField(max_digits=10, decimal_places=2)
     ordered = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.product.product_name
+
+    def sub_total(self):
+        sub_total = self.product_price * self.quantity
+        return sub_total

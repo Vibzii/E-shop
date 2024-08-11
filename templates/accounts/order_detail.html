@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <i class="fa-regular fa-circle-check fa-2xl" style="color: #68bd00;"></i>
+    <h1 class="pt-2 text-body-emphasis">Order Completed</h1>
+
+  </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row">
+            <aside class="col-lg-6">
+                <div class="card mb-3 shadow">
+                    <h5 class="card-header text-center">Your order</h5>
+                    <div class="px-3 my-4">
+                        <table class="table table-borderless table-striped align-middle mb-0">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Product</th>
+                                    <th scope="col" class="text-center" width="150">Quantity</th>
+                                    <th scope="col" class="text-center" width="120">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_product %}
+                                <tr>
+                                    <td>
+                                        {% if item.variations.all %}
+                                            {% for i in item.variations.all %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0">
+                                                    <img src="{{ i.image.url }}" class="img-fluid img-thumbnail square-image" alt="{{ i.product.product_name }}" style="max-width: 80px;">
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <a href="{{item.product.get_url}}" class="fw-bold text-dark text-decoration-none">{{ i.product.product_name }}</a>
+                                                    <p class="text-muted small mb-0">
+                                                        {{ i.variation_category|capfirst }}: {{ i.variation_value|capfirst }}<br>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <var>{{ item.quantity }}</var>
+                                        </div>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <div class="price-wrap">
+                                            <var class="price">{{ item.sub_total }} €</var>
+                                            <small class="text-muted d-block">{{ item.variations.all.0.variation_price }} € each</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <table class="table align-middle">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col" class="text-center" height="100%"></th>
+                                    <th scope="col" class="text-center" height="100%" width="150"></th>
+                                    <th scope="col" class="text-center" height="100%" width="120"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Product Total:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ subtotal }} €</td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ order.shipping_cost }} €</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Grand Total:</td>
+                                    <td></td>
+                                    <td class="text-center fw-bold">{{ order.order_total }} €</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </aside>
+
+            <aside class="col-lg-6">
+                <div class="card mb-3 shadow">
+                    <h5 class="text-center card-header">Order Informations</h5>
+                    <div class="card-body px-5 py-3">
+                    <b>Billing Address: </b>
+                    <br>
+                    <p class="card-text mb-0">{{ order.full_name }}</p>
+                    <p class="card-text mb-0">{{ order.full_address }}</p>
+                    <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
+                    <p class="card-text mb-0">{{ order.country }}</p>
+                    <br>
+                    {% if order.shipping_name %}
+                        <b>Shipping Address: </b>
+                        <br>
+                        <p class="card-text mb-0">{{ order.shipping_name }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_address_line_1}} {{ order.shipping_address_line2 }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_zipcode }}, {{ order.shipping_city }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_country }}</p>
+                        <br>
+                    {% endif %}
+                    {% if order.order_note %}
+                        <b>Order Note: </b> {{ order.order_note }}
+                        <br>
+                        <br>
+                    {% endif %}
+                    <ul class="list-unstyled mb0">
+                        <li><strong>Payment Type</strong> Paypal </li>
+                        <li><strong>Order</strong> # {{order.order_number}}</li>
+                        <li><strong>Transaction ID</strong> {{order.payment.payment_id}}</li>
+                        <li><strong>Order Date:</strong> {{order.created_at}}</li>
+                        <li><strong>Status:</strong> {{order.payment.status}}</li>
+                    </ul>
+                </div>
+            </aside>
+    </div>
+</div>
+
+
+
+{% endblock %}

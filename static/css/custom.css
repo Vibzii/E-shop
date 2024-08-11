@@ -1,0 +1,250 @@
+/* Hide radio button */
+
+.rate > input{
+    display: none;
+    }
+
+.rate{
+    display: inline-block;
+    border: 0;
+}
+
+.rate > label{
+    float: right;
+}
+
+/* show the stars */
+
+.rate > label:before{
+    display: inline-block;
+    font-size: 1.1rem;
+    font-family: FontAwesome;
+    content: "\f005";
+    margin: 0;
+    padding: 0.3rem 0.2rem;
+    cursor: pointer;
+
+}
+
+.rate .half:before{
+    content:"\f089";
+    position: absolute;
+    padding-right: 0;
+}
+
+
+/* click and hover */
+
+input:checked ~ label, label:hover ~ label{
+    color: #ffb503;
+}
+
+/* hover Highlight */
+
+input:checked + label:hover,
+input:checked ~ label:hover,
+input:checked ~ label:hover ~ label,
+label:hover ~ input:checked ~ label{
+    color: #cc9000;
+}
+
+.rating-star i{
+    color: #ffb503 !important;
+}
+
+ul.thumb{
+    margin:0 auto;
+    padding:0;
+    float: left;
+
+}
+
+ul.thumb li{
+    list-style: none;
+    margin: 10px;
+}
+
+ul.thumb li img{
+    width: 80px;
+    height: 80px;
+    border: 1px solid grey;
+}
+
+/* bootstrap footer*/
+
+.bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+
+/* Show it is fixed to the top */
+/*
+body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+}
+*/
+
+
+
+.nav li {
+    margin: 0 30px;
+}
+
+
+        /* Add CSS for dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            text-align: left;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+
+
+    /* Custom style for active accordion button */
+    .accordion-button:not(.collapsed) {
+      background-color: #f2edeb !important; /* Set the background color to pink */
+      color: #93613f;
+      border-radius: 10px; /* Make the button edges more rounded */
+    }
+
+    /* Custom style for all accordion buttons */
+    .accordion-button {
+      border-radius: 10px; /* Apply rounded corners to all accordion buttons */
+    }
+
+    /* Custom style for accordion items */
+   .accordion-item {
+      border-radius: 15px; /* Make the accordion item's frame edges more rounded */
+      overflow: hidden; /* Ensure content doesn't overflow the rounded corners */
+      border: 1px solid #ddd; /* Add border to make the rounded corners visible */
+      margin-bottom: 10px; /* Add space between accordion items */
+    }
+
+
+    /* Specific adjustment for top and bottom items */
+   .accordion-item:first-child {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .accordion-item:last-child {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+
+.list-group-item-pink.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #fbd6cd;
+  border-color: #fbd6cd;
+}
+
+.btn-outline-pink {
+  color: #93613f;
+  border-color: #fbd6cd;
+}
+
+.btn-custom-pink {
+    background-color: #fbd6cd; /* Replace with your custom pink color */
+    border-color: #fbd6cd; /* Replace with your custom pink color */
+    color: #93613f; /* Ensure the text color contrasts well with the background */
+
+}

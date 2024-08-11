@@ -5140,9 +5140,9 @@ a.badge-gray-light:focus, a.badge-gray-light.focus {
 }
 .list-group-item.active {
   z-index: 2;
-  color: #fff;
-  background-color: #3167eb;
-  border-color: #3167eb;
+  color: #93613f;
+  background-color: #fbd6cd;
+  border-color: #fbd6cd;
 }
 
 .list-group-horizontal {

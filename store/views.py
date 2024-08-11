@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
-from .models import Product, Category, ReviewRating
+from .models import Product, Category, ReviewRating, ProductGallery, Variation
 from orders.models import OrderProduct
 from carts.views import _cart_id
 from carts.models import CartItem
@@ -23,7 +23,7 @@ def store(request, category_slug=None):
         product_count = products.count()
     else:
         products = Product.objects.filter(is_available=True).order_by('id')
-        paginator = Paginator(products, 6)
+        paginator = Paginator(products, 100)
         page= request.GET.get('page')
         paged_products = paginator.get_page(page)
         product_count = products.count()
@@ -50,13 +50,21 @@ def product_detail(request, category_slug, product_slug):
     #Get the reviews :
 
     reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
+    variations = Variation.objects.filter(product=single_product)
 
+    product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
+    count_gallery = product_gallery.count()
 
     context = {
         "single_product": single_product,
         "in_cart": in_cart,
         'order_product': order_product,
         'reviews': reviews,
+        'product_gallery': product_gallery,
+        'variations': variations,
+        'count_gallery': count_gallery,
+        'category_slug': category_slug,
+        'product_slug': product_slug,
     }
 
     return render(request,'store/product-detail.html', context)

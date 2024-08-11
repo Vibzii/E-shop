@@ -1,0 +1,57 @@
+{% autoescape off %}
+    Hello Meng,
+
+    <strong>{{ user.first_name }} bought something from you ! </strong><br><br>
+
+    <strong>Order Number:</strong> {{ order.order_number }}<br><br>
+
+    <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+        <thead style="background-color: #f2f2f2;">
+            <tr style="text-align: left;">
+                <th>Product</th>
+                <th style="text-align: center;">Quantity</th>
+                <th style="text-align: center;">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_product %}
+                {% if item.variations.all %}
+                    {% for i in item.variations.all %}
+                    <tr>
+                        <td>
+                            <!--<img src="{{ i.image.url }}" alt="{{ i.product.product_name }}" style="max-width: 80px; display: inline-block; vertical-align: middle;"> -->
+                            <span style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+                                <a href="" style="font-weight: bold; color: #000; text-decoration: none;">{{ i.product.product_name }}</a>
+                                <br>
+                                <span style="color: #888; font-size: small;">
+                                    {{ i.variation_category|capfirst }}: {{ i.variation_value|capfirst }}
+                                </span>
+                            </span>
+                        </td>
+                        <td style="text-align: center;">{{ item.quantity }}</td>
+                        <td style="text-align: center;">{{ item.sub_total }} €</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table border="0" cellspacing="0" cellpadding="8" style="width: 100%;">
+        <tr>
+            <td colspan="2" style="text-align: right;">Product Total:</td>
+            <td style="text-align: center;">{{ subtotal }} €</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">Shipping:</td>
+            <td style="text-align: center;">{{ order.shipping_cost }} €</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right; font-weight: bold;">Grand Total:</td>
+            <td style="text-align: center; font-weight: bold;">{{ order.order_total }} €</td>
+        </tr>
+    </table>
+
+    <br>
+
+{% endautoescape %}
