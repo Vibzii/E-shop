@@ -77,7 +77,6 @@ def payment_product(request):
             data.order_total = grand_total
             data.tax = tax
             data.shipping_cost = max_shipping
-            data.ip = request.META.get('REMOTE_ADDR')
             data.save()
 
             yr = int(datetime.date.today().strftime('%Y'))
@@ -94,9 +93,14 @@ def payment_product(request):
             item_names = [item.product.product_name for item in cart_items]
             item_name_str = ', '.join(item_names)
 
+            if request.user.is_authenticated:
+                custom_value = current_user
+            else:
+                custom_value = f"cart:{_cart_id(request)}|email:{data.email}"
+
             paypal_checkout = {
                 'business': settings.PAYPAL_RECEIVER_EMAIL,
-                'custom': current_user if request.user.is_authenticated else 'data.email',
+                'custom': custom_value,
                 'amount': grand_total,
                 'item_name': item_name_str,
                 'invoice': str(uuid.uuid4()),  # Ensure this is a string

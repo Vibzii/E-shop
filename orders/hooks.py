@@ -29,6 +29,7 @@ def payment_notification(sender, **kwargs):
             current_user = ipn_obj.custom
             user = Account.objects.get(email=current_user)
             order = Order.objects.get(is_ordered=False, order_number=order_number)
+            print(current_user)
             if order:
                 # Store transaction details inside Payment model
                 payment = Payment(
