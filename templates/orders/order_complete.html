@@ -106,22 +106,43 @@
                     <b>Billing Address: </b>
                     <br>
                     <p class="card-text mb-0">{{ order.full_name }}</p>
-                    <p class="card-text mb-0">{{ order.full_address }}</p>
+                    <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
+                    {% if order.address_line_2 %}
+                        <p class="card-text mb-0">{{ order.address_line_2 }} </p>
+                    {% endif %}
                     <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
                     <p class="card-text mb-0">{{ order.country }}</p>
                     <br>
-                    {% if order.shipping_name %}
+                    <b>Contact: </b>
+                    <br>
+                    <p class="card-text mb-0">{{ order.email }}</p>
+                    <br>
                     <b>Shipping Address: </b>
                     <br>
-                    <p class="card-text mb-0">{{ order.shipping_name }}</p>
-                    <p class="card-text mb-0">{{ order.shipping_address_line_1}} {{ order.shipping_address_line2 }}</p>
-                    <p class="card-text mb-0">{{ order.shipping_zipcode }}, {{ order.shipping_city }}</p>
-                    <p class="card-text mb-0">{{ order.shipping_country }}</p>
+                    {% if order.shipping_city %}
+                        <p class="card-text mb-0">{{ order.shipping_first_name }} {{ order.shipping_last_name }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_address_line_1 }} {{ order.shipping_house_number }}</p>
+                        {% if order.shipping_address_line_2 %}
+                            <p class="card-text mb-0">{{ order.shipping_address_line_2 }}</p>
+                        {% endif %}
+                        <p class="card-text mb-0">{{ order.shipping_zipcode }}, {{ order.shipping_city }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_country }}</p>
                         <br>
+                    {% else %}
+                        <p class="card-text mb-0">{{ order.full_name }}</p>
+                        <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
+                        {% if order.address_line_2 %}
+                            <p class="card-text mb-0">{{ order.address_line_2 }} </p>
+                        {% endif %}
+                        <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
+                        <p class="card-text mb-0">{{ order.country }}</p>
+                        <br>
+
                     {% endif %}
                     {% if order.order_note %}
-                    <b>Order Note: </b> {{ order.order_note }}
+                    <b>Order Note: </b>
                         <br>
+                        <p class="card-text mb-0">{{ order.order_note }}</p>
                         <br>
                     {% endif %}
                     <ul class="list-unstyled mb0">

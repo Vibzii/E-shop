@@ -211,6 +211,11 @@ body {
       border-bottom-right-radius: 15px;
     }
 
+/* Remove the focus outline (blue border) on the accordion button */
+.accordion-button:focus {
+
+    box-shadow: none; /* Remove any box-shadow that might be causing the border */
+}
 
 .list-group-item-pink.active {
   z-index: 2;
@@ -557,3 +562,8 @@ body {
 .payment-successful{
     background-color: success;
 }
+
+  .navbar-nav .nav-link.active {
+    font-weight: bold;
+    color: #93613f; /* Change the color to something more noticeable */
+  }

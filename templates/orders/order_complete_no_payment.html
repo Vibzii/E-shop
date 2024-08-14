@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <i class="fa-regular fa-circle-check fa-2xl" style="color: #68bd00;"></i>
+    <h1 class="pt-2 text-body-emphasis">Payment Successful</h1>
+    <p class="col-lg-8 mx-auto fs-5 text-muted">
+        A confirmation email will be sent to your Email Address
+    </p>
+    <div class="d-inline-flex gap-2">
+      <a href="{% url 'store' %}"><button  class="d-inline-flex align-items-center btn btn-custom-pink btn-lg px-4 rounded-pill" type="button">
+        Back to the store
+      </button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row">
+            <aside class="col-lg-12 text-center">
+                <div class="card mb-3 shadow">
+                    <h5 class="text-center card-header">Order Informations</h5>
+                    <div class="card-body px-5 py-3">
+                    <b>Billing Address: </b>
+                    <br>
+                    <p class="card-text mb-0">{{ order.full_name }}</p>
+                    <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
+                    {% if order.address_line_2 %}
+                        <p class="card-text mb-0">{{ order.address_line_2 }} </p>
+                    {% endif %}
+                    <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
+                    <p class="card-text mb-0">{{ order.country }}</p>
+                    <br>
+                    <b>Contact: </b>
+                    <br>
+                    <p class="card-text mb-0">{{ order.email }}</p>
+                    <br>
+                    <b>Shipping Address: </b>
+                    <br>
+                    {% if order.shipping_city %}
+                        <p class="card-text mb-0">{{ order.shipping_first_name }} {{ order.shipping_last_name }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_address_line_1 }} {{ order.shipping_house_number }}</p>
+                        {% if order.shipping_address_line_2 %}
+                            <p class="card-text mb-0">{{ order.shipping_address_line_2 }}</p>
+                        {% endif %}
+                        <p class="card-text mb-0">{{ order.shipping_zipcode }}, {{ order.shipping_city }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_country }}</p>
+                        <br>
+                    {% else %}
+                        <p class="card-text mb-0">{{ order.full_name }}</p>
+                        <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
+                        {% if order.address_line_2 %}
+                            <p class="card-text mb-0">{{ order.address_line_2 }} </p>
+                        {% endif %}
+                        <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
+                        <p class="card-text mb-0">{{ order.country }}</p>
+                        <br>
+
+                    {% endif %}
+                    {% if order.order_note %}
+                    <b>Order Note: </b>
+                        <br>
+                        <p class="card-text mb-0">{{ order.order_note }}</p>
+                        <br>
+                    {% endif %}
+                    <ul class="list-unstyled mb0">
+                        <li><strong>Payment Type</strong> Paypal </li>
+                        <li><strong>Order</strong> # {{order.order_number}}</li>
+                        <li><strong>Order Date:</strong> {{order.created_at}}</li>
+                    </ul>
+                </div>
+            </aside>
+    </div>
+</div>
+
+
+{% endblock %}

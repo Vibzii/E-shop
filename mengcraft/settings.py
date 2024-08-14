@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',
     'admin_honeypot',
     'contact',
+    'faq',
 ]
 
 MIDDLEWARE = [

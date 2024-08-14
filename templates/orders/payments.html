@@ -38,29 +38,35 @@
                     <b>Billing Address: </b>
                     <br>
                     <p class="card-text mb-0">{{ order.full_name }}</p>
-                    <p class="card-text mb-0">{{ order.full_address }}</p>
+                    <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
+                    {% if order.address_line_2 %}
+                        <p class="card-text mb-0">{{ order.address_line_2 }} </p>
+                    {% endif %}
                     <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
                     <p class="card-text mb-0">{{ order.country }}</p>
                     <br>
                     <b>Contact: </b>
                     <br>
                     <p class="card-text mb-0">{{ order.email }}</p>
-                    <p class="card-text mb-0">{{ order.phone }}</p>
-
                     {% if order.order_note %}
                     <br>
-                    <b>Order Note: </b> {{ order.order_note }}
+                    <b>Order Note: </b>
+                    <br>
+                    <p class="card-text mb-0">{{ order.order_note }}</p>
                     {% endif %}
 
                 </div> <!-- card.// -->
-                {% if order.shipping_name %}
+                {% if order.shipping_city %}
                     <div class="card shadow">
                         <h5 class="text-center card-header">Shipping Address</h5>
                         <div class="card-body px-5 py-3">
                         <b>Shipping Address: </b>
                         <br>
-                        <p class="card-text mb-0">{{ order.shipping_name }}</p>
-                        <p class="card-text mb-0">{{ order.shipping_address_line_1 }} {{ order.shipping_address_line_2 }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_first_name }} {{ order.shipping_last_name }}</p>
+                        <p class="card-text mb-0">{{ order.shipping_address_line_1 }} {{ order.shipping_house_number }}</p>
+                        {% if order.shipping_address_line_2 %}
+                            <p class="card-text mb-0">{{ order.shipping_address_line_2 }}</p>
+                        {% endif %}
                         <p class="card-text mb-0">{{ order.shipping_zipcode }}, {{ order.shipping_city }}</p>
                         <p class="card-text mb-0">{{ order.shipping_country }}</p>
 
@@ -72,9 +78,13 @@
                         <b>Shipping Address: </b>
                         <br>
                         <p class="card-text mb-0">{{ order.full_name }}</p>
-                        <p class="card-text mb-0">{{ order.full_address }}</p>
+                        <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
+                        {% if order.address_line_2 %}
+                            <p class="card-text mb-0">{{ order.address_line_2 }}</p>
+                        {% endif %}
                         <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
                         <p class="card-text mb-0">{{ order.country }}</p>
+
                     </div> <!-- card.// -->
 
                 {% endif %}
@@ -136,20 +146,33 @@
                     <h5 class="card-header text-center">
                         Payment
                     </h5>
-                    <div class="card-body px-5 align-items-center">
-                        <dl class="row mb-3">
-                            <dt class="col-8">Total:</dt>
-                            <dd class="col-4 text-end">{{ total }} €</dd>
-                        </dl>
-                        <dl class="row mb-3">
-                            <dt class="col-8">Shipping:</dt>
-                            <dd class="col-4 text-end">{{ shipping }} €</dd>
-                        </dl>
-                        <hr>
-                        <dl class="row mb-3">
-                            <dt class="col-8 fw-bold">Grand Total:</dt>
-                            <dd class="col-4 text-end fw-bold">{{ grand_total }} €</dd>
-                        </dl>
+                    <div class="card-body align-items-center pt-0">
+                        <table class="table table-borderless align-middle">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col" class="text-center" height="100%"></th>
+                                    <th scope="col" class="text-center" height="100%" width="150"></th>
+                                    <th scope="col" class="text-center" height="100%" width="120"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Product Total:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ total }} €</td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ shipping }} €</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Grand Total:</td>
+                                    <td></td>
+                                    <td class="text-center fw-bold">{{ grand_total }} €</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div id="paypal-button-container" class="text-center">
                             <!-- PayPal Button Will Load Here -->
                             {{ paypal.render }}

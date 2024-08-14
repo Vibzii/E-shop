@@ -24,146 +24,30 @@
       <div class="container">
         <div class="flex-wrap align-items-center justify-content-center">
           <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                  Versand
-                </button>
-              </h2>
-              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                <div class="accordion-body">
-📦                Die Blumen können direkt am nächsten Tag nach der Bestellung in den Versand gehen und werden aus Deutschland verschickt.
-                </div>
+            {% for question in questions %}
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-heading{{question.id}}">
+                  {% if not question.expanded %}
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{question.id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{question.id}}">
+                      {{question.title}}
+                    </button>
+                  {% else %}
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{question.id}}" aria-expanded="true" aria-controls="panelsStayOpen-collapse{{question.id}}">
+                      {{question.title}}
+                    </button>
+                  {% endif %}
+                </h2>
+                  {% if not question.expanded %}
+                    <div id="panelsStayOpen-collapse{{question.id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading{{question.id}}">
+                  {% else %}
+                    <div id="panelsStayOpen-collapse{{question.id}}" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading{{question.id}}">
+                  {% endif %}
+                      <div class="accordion-body">
+                      {{ question.answer |linebreaksbr }}
+                      </div>
+                    </div>
               </div>
-            </div>
-              <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
-               Rückgaben & Umtausch
-                </button>
-              </h2>
-              <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
-                <div class="accordion-body">
-                Käufer tragen die Versandkosten für Rückgaben.<br>
-                <br>
-                Falls der Artikel nicht in seinem Originalzustand zurückgegeben wird, ist der Käufer für jeglichen Wertverlust verantwortlich.
-
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
-                  Stornierungen
-                </button>
-              </h2>
-              <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree">
-                <div class="accordion-body">
-                Stornierungen: nicht akzeptiert<br>
-                <br>
-                Bitte kontaktiere den Shop, falls du irgendein Problem mit deiner Bestellung hast.<br>
-
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingFour">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                AGB & Widerrufsbelehrung
-                </button>
-              </h2>
-              <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
-                <div class="accordion-body">
-                  Allgemeine Geschäftsbedingungen von MengcraftCrochet, Shop für Handarbeiten<br>
-                  § 1 Geltungsbereich und Anbieter<br>
-                  1. Die nachstehenden Allgemeinen Geschäftsbedingungen, im Folgenden „AGB“ genannt, gelten für alle Bestellungen über die Etsy Plattform auf der Shopseite von MengcraftCrochet, in ihrer zum Zeitpunkt der Bestellung gültigen Fassung. Soweit nicht anders vereinbart, wird den eigens vom Käufer verwendeten Bedingungen widersprochen.<br>
-                  2. Der Onlineshop richtet sich ausschließlich an Verbraucher. Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden können (§ 13 BGB).<br>
-                  3. MengcraftCrochet bietet über deren Onlineshop folgende Produkte an: In Handarbeit gefertigte Objekte und Anleitungen zur Selbstanfertigung.<br>
-                  4. Die Angebote richten sich ausschließlich an Endkunden mit einer Rechnungs- und Lieferanschrift in Deutschland.<br>
-                  5. Der Käufer muss das 18. Lebensjahr vollendet haben.<br>
-                  § 2 Vertragspartner, Vertragsschluss und Korrekturmöglichkeiten<br>
-                  1. Der Kaufvertrag kommt zustande mit:<br>
-                  Meng Ian Kuok<br>
-                  Email: mengian.kuok@gmail.com<br>
-                  2. Die Warenpräsentation im Onlineshop stellt kein rechtlich bindendes Vertragsangebot von MengcraftCrochet dar, sondern sind nur eine unverbindliche Aufforderung an den Verbraucher, Waren zu bestellen. Mit der Bestellung der gewünschten Ware gibt der Verbraucher ein für ihn verbindliches Angebot auf Abschluss eines Kaufvertrages ab.<br>
-                  3. Bei Eingang einer Bestellung in unserem Onlineshop gelten folgende Regelungen:<br>
-                  Der Verbraucher gibt ein bindendes Vertragsangebot ab, indem er den in unserem Onlineshop vorgesehenen Bestellprozess erfolgreich durchläuft. Die Bestellung erfolgt in folgenden Schritten:<br>
-                  4. Auswahl der gewünschten Ware<br>
-                  5. Bestätigen durch Anklicken des Buttons „In den Warenkorb“<br>
-                  6. Prüfung der Angaben im Warenkorb<br>
-                  7. Betätigung des Buttons „Weiter zur Kasse“<br>
-                  8. Nochmalige Prüfung bzw. Berichtigung der jeweiligen eingegebenen Daten<br>
-                  9. Verbindliche Absendung der Bestellung durch Anklicken des Buttons „Kostenpflichtig bestellen“<br>
-                  Der Verbraucher kann vor dem verbindlichen Absenden der Bestellung durch Betätigen der in dem von ihm verwendeten Internetbrowser enthaltenen „Zurück“-Taste nach Kontrolle seiner Angaben wieder zu der Internetseite gelangen, auf der die Angaben des Kunden erfasst wurden und Eingabefehler berichtigen bzw. durch Schließen des Internetbrowsers den Bestellvorgang abbrechen.<br>
-
-                  § 3 Vertragssprache<br>
-                  Die Vertragssprache ist ausschließlich deutsch.<br>
-                  § 4 Preise<br>
-                  1. Die dargestellten Preise im Onlineshop sind Endpreise zuzüglich den jeweiligen Versandkosten. Nach § 19 UStG (Kleinunternehmerregelung) entfällt die Umsatzsteuer und muss demnach nicht ausgewiesen werden. Näheres zur Höhe der Versandkosten erfahren Sie bei den Angeboten.<br>
-                  § 5 Eigentumsvorbehalt und Zurückbehaltungsrecht<br>
-                  1. Die Ware bleibt bis zur vollständigen Bezahlung Eigentum von MengcraftCrochet.<br>
-                  2. Ein Zurückbehaltungsrecht kann vom Käufer nur dann ausgeübt werden, sofern es nicht Forderungen aus selbigem Vertragsverhältnis sind.<br>
-                  § 6 Lieferung<br>
-                  1. Sofern nicht anders vereinbart, erfolgt die Lieferung der Ware an die vom Besteller angegebene Adresse.<br>
-                  2. Lieferungen sind ausschließlich nach Deutschland möglich.<br>
-                  3. Im Onlineshop finden Sie Hinweise zur Verfügbarkeit unserer Produkte. Wir weisen darauf hin, dass sämtliche Angaben zu Verfügbarkeit, Lieferung oder Zustellung eines Produktes lediglich voraussichtliche Angaben und ungefähre Richtwerte sind. Sie stellen keine verbindlichen oder garantierten Versand- oder Liefertermine dar. Eine Abgabe erfolgt nur in haushaltsüblichen Mengen.<br>
-                  4. Sofern MengcraftCrochet Produkte nicht mehr verfügbar sind, werden Sie darüber gesondert per E-Mail oder per Nachricht in Ihrem Kundenkonto informiert. Die gesetzlichen Ansprüche des Bestellers bleiben unberührt.<br>
-                  5. Für Käufer gilt, dass die Gefahr des zufälligen Untergangs oder der Verschlechterung der verkauften Ware während der Versendung erst mit der Übergabe der Ware an den Käufer übergeht. Die Regelung gilt unabhängig davon, ob die Versendung versichert oder unversichert erfolgt.<br>
-                  § 7 Transportschäden<br>
-                  1. Werden Waren mit offensichtlichen Transportschäden angeliefert, so reklamieren Sie solche Fehler bitte möglichst sofort beim Zusteller und nehmen Sie bitte unverzüglich Kontakt zu uns auf.<br>
-                  2. Die Versäumung einer Reklamation oder Kontaktaufnahme hat für Ihre gesetzlichen Ansprüche und deren Durchsetzung, insbesondere Ihre Gewährleistungsrechte, keinerlei Konsequenzen. Sie helfen uns aber, unsere eigenen Ansprüche gegenüber dem Frachtführer bzw. der Transportversicherung geltend machen zu können.<br>
-                  § 8 Gewährleistung<br>
-                  1. Soweit nicht ausdrücklich anderes vereinbart, richten sich Ihre Gewährleistungsansprüche nach den gesetzlichen Bestimmungen des Kaufrechts (§§ 433 ff. BGB).<br>
-                  2. Im Übrigen gelten für die Gewährleistung die gesetzlichen Bestimmungen, insbesondere die zweijährige Verjährungsfrist gemäß § 438 Abs. 1 Nr. 3 BGB.<br>
-                  § 9 Haftung<br>
-                  1. Unbeschränkte Haftung:<br>
-                  Wir haften unbeschränkt für Vorsatz und grobe Fahrlässigkeit sowie nach Maßgabe des geltenden Produkthaftungsgesetzes. Für leichte Fahrlässigkeit haften wir bei Schäden aus der Verletzung des Lebens, Körpers oder der Gesundheit von Personen.<br>
-                  2. Beschränkte Haftung:<br>
-                  Bei leichter Fahrlässigkeit haften wir nur im Falle der Verletzung einer wesentlichen Vertragspflicht, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst ermöglicht und auf deren Einhaltung Sie regelmäßig vertrauen dürfen (Kardinalpflicht). Die Haftung für leichte Fahrlässigkeit ist der Höhe nach beschränkt auf die bei Vertragsschluss vorhersehbaren Schäden, mit deren Entstehung typischerweise gerechnet werden muss. Diese Haftungsbeschränkung gilt auch zugunsten unserer Erfüllungsgehilfen.<br>
-
-                  § 10 Widerrufsbelehrung<br>
-                  1. Ist der Besteller ein Verbraucher, so hat er ein Widerrufsrecht nach Maßgabe der folgenden Bestimmungen.<br>
-                  2. Widerrufsrecht:<br>
-                  Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag bei physischen Produkten zu widerrufen, aber dies gilt nicht für digitale Produkte (z.B. Häkelanleitungen). Die Widerrufsfrist beträgt vierzehn Tage, ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat.<br>
-                  3. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns:<br>
-                  Meng Ian Kuok<br>
-                  Email: mengian.kuok@gmail.com<br>
-                  mittels einer eindeutigen Erklärung (z.B. E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das nachfolgende Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.<br>
-                  4. Machen Sie von Ihrem Widerrufsrecht Gebrauch, so werden wir Ihnen unverzüglich (z.B. per E-Mail) eine Bestätigung über den Eingang eines solchen Widerrufs übermitteln.<br>
-                  5. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden und Sie die Waren innerhalb der unten definierten Frist zurücksenden.<br>
-                  6. Folgen des Widerrufs: Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart. In keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.<br>
-                  7. Wir können die Rückzahlung verweigern bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.<br>
-                  8. Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrages unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden. Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.<br>
-                  <br>
-                  § 11 Muster-Widerrufsformular<br>
-                  Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie dieses Formular aus und senden es zurück.<br>
-                  An:<br>
-                  Meng Ian Kuok<br>
-                  Email: mengian.kuok@gmail.com<br>
-                  Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*)<br>
-                  Bestellt am (*)/erhalten am (*)<br>
-                  <br>
-                  Name des/der Verbraucher(s)<br>
-                  <br>
-                  Anschrift des/der Verbraucher(s)<br>
-                    <br>
-                  Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)<br>
-                  <br>
-                  Datum<br>
-                  <br>
-                  (*) Unzutreffendes streichen<br>
-                   <br>
-                  § 12 Streitbeilegung<br>
-                  1. Die EU-Kommission stellt eine Online-Plattform zur außergerichtlichen Streitbeilegung bereit. Verbrauchern gibt dies die Möglichkeit, Streitigkeiten im Zusammenhang mit Ihrer Onlinebestellung zunächst ohne die Einschaltung eines Gerichts zu klären. Die Plattform finden Sie hier:<br>
-                  http://ec.europa.eu/consumers/odr/<br>
-                  2. Zu einer Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle sind wir nicht verpflichtet und nicht bereit.<br>
-                  § 13 Schlussbestimmungen<br>
-                  1. Sollten eine oder mehrere Bestimmungen dieser AGB unwirksam sein oder werden, wird dadurch die Wirksamkeit der anderen Bestimmungen im Übrigen nicht berührt.<br>
-                  2. Alle Verträge zwischen Lailashäkelwelt und Ihnen unterliegen dem Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG).<br>
-                  Stand: 24.07.2024<br>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </div>

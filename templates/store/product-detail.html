@@ -7,7 +7,26 @@
 
 <!-- ============================ Main Article ================================= -->
 {% include 'includes/alerts.html' %}
-<section class="padding-box">
+<section class="padding-box pt-2">
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-chevron p-3 rounded-3 mb-0">
+      <li class="breadcrumb-item">
+        <a class="link-body-emphasis" href="{% url 'store' %}">
+			<i class="fa-solid fa-store fa-lg"></i>
+          <span class="visually-hidden">Store</span>
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a class="link-body-emphasis fw-semibold text-decoration-none" href="{{category.get_url}}">{{category.category_name |capfirst}}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{product_slug |capfirst}}
+      </li>
+    </ol>
+  </nav>
+</div>
+
   <div class="container">
 	<div class="container">
 		<div class="card py-3">
@@ -75,7 +94,7 @@
 				  <div class="mb-3">
 					<var class="price h4" id="product-price">from {{single_product.price}}€</var>
 				  </div>
-				  <p>{{single_product.description}}</p>
+				  <p>{{single_product.description | linebreaksbr}}</p>
 				  <hr>
 					<div class="col-12">
 					  <h6>Choose Options</h6>

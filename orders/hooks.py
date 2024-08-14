@@ -9,7 +9,7 @@ from accounts.models import Account
 from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.signals import valid_ipn_received
 from .models import Order, Payment, OrderProduct
-from carts.models import CartItem
+from carts.models import CartItem, Cart
 from decouple import config
 logger = logging.getLogger(__name__)
 
@@ -26,89 +26,173 @@ def payment_notification(sender, **kwargs):
             transaction_id = ipn_obj.txn_id
             order_number = ipn_obj.item_number
             status = ipn_obj.payment_status
-            current_user = ipn_obj.custom
-            user = Account.objects.get(email=current_user)
-            order = Order.objects.get(is_ordered=False, order_number=order_number)
-            print(current_user)
-            if order:
-                # Store transaction details inside Payment model
-                payment = Payment(
-                    user=user,
-                    payment_id=transaction_id,
-                    payment_method='Paypal',
-                    amount_paid=order.order_total,
-                    status=status,
-                )
-                payment.save()
-                order.payment = payment
-                order.is_ordered = True
-                order.save()
+            current_user = str(ipn_obj.custom)
+            user = current_user.split("|")
+            if user[0] == "True":
+                user = Account.objects.get(email=user[2])
+                order = Order.objects.get(user=user, is_ordered=False, order_number=order_number)
+                if order:
+                    # Store transaction details inside Payment model
+                    payment = Payment(
+                        user=user,
+                        payment_id=transaction_id,
+                        payment_method='Paypal',
+                        amount_paid=order.order_total,
+                        status=status,
+                    )
+                    payment.save()
+                    order.payment = payment
+                    order.is_ordered = True
+                    order.save()
 
-                cart_items = CartItem.objects.filter(user=user)
-                for item in cart_items:
-                    orderproduct = OrderProduct()
-                    orderproduct.order_id = order.id
-                    orderproduct.payment = payment
-                    orderproduct.user_id = user.id
-                    orderproduct.product_id = item.product_id
-                    orderproduct.quantity = item.quantity
-                    orderproduct.product_price = item.product.price
-                    orderproduct.ordered = True
-                    orderproduct.save()
-
-                    cart_item = CartItem.objects.get(id=item.id)
-                    product_variation = cart_item.variation.all()
-                    # Reduce the quantity of the sold products
-                    for variation in product_variation:
-                        variation.stock = variation.stock - item.quantity
-                        variation.save()
-                        orderproduct.product_price = variation.variation_price
+                    cart_items = CartItem.objects.filter(user=user)
+                    for item in cart_items:
+                        orderproduct = OrderProduct()
+                        orderproduct.order_id = order.id
+                        orderproduct.payment = payment
+                        orderproduct.user_id = user.id
+                        orderproduct.product_id = item.product_id
+                        orderproduct.quantity = item.quantity
+                        orderproduct.product_price = item.product.price
+                        orderproduct.ordered = True
                         orderproduct.save()
 
-                    orderproduct = OrderProduct.objects.get(id=orderproduct.id)
-                    orderproduct.variations.set(product_variation)
-                    orderproduct.save()
+                        cart_item = CartItem.objects.get(id=item.id)
+                        product_variation = cart_item.variation.all()
+                        # Reduce the quantity of the sold products
+                        for variation in product_variation:
+                            variation.stock = variation.stock - item.quantity
+                            variation.save()
+                            orderproduct.product_price = variation.variation_price
+                            orderproduct.save()
 
-                    # Reduce the quantity of the sold products
+                        orderproduct = OrderProduct.objects.get(id=orderproduct.id)
+                        orderproduct.variations.set(product_variation)
+                        orderproduct.save()
 
-                # Clear cart
-                CartItem.objects.filter(user=user).delete()
+                        # Reduce the quantity of the sold products
 
-                orderproduct = OrderProduct.objects.filter(order=order.id)
+                    # Clear cart
+                    CartItem.objects.filter(user=user).delete()
 
-                subtotal = 0
-                for i in orderproduct:
-                    subtotal += i.product_price * i.quantity
+                    orderproduct = OrderProduct.objects.filter(order=order.id)
 
-                # Send order received email to customer
-                mail_subject = 'Thank you for your order!'
-                message = render_to_string('orders/order_received_email_user.html', {
-                    'user': user,
-                    'order': order,
-                    'order_product': orderproduct,
-                    'subtotal': subtotal,
-                })
-                to_email = user.email
-                send_email = EmailMessage(mail_subject, message, to=[to_email])
-                send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
-                send_email.send()
+                    subtotal = 0
+                    for i in orderproduct:
+                        subtotal += i.product_price * i.quantity
 
-                # Send order email to Meng
-                mail_subject = 'You received an order'
-                message = render_to_string('orders/order_received_email_admin.html', {
-                    'user': user,
-                    'order': order,
-                    'order_product': orderproduct,
-                    'subtotal': subtotal,
-                })
-                to_email = config("EMAIL_HOST_USER")
-                send_email = EmailMessage(mail_subject, message, to=[to_email])
-                send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
-                send_email.send()
+                    # Send order received email to customer
+                    mail_subject = 'Thank you for your order!'
+                    message = render_to_string('orders/order_received_email_user.html', {
+                        'user': user.first_name,
+                        'order': order,
+                        'order_product': orderproduct,
+                        'subtotal': subtotal,
+                    })
+                    to_email = user.email
+                    send_email = EmailMessage(mail_subject, message, to=[to_email])
+                    send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
+                    send_email.send()
 
-                return HttpResponse("OK")
+                    # Send order email to Meng
+                    mail_subject = 'You received an order'
+                    message = render_to_string('orders/order_received_email_admin.html', {
+                        'user': user,
+                        'order': order,
+                        'order_product': orderproduct,
+                        'subtotal': subtotal,
+                    })
+                    to_email = config("EMAIL_HOST_USER")
+                    send_email = EmailMessage(mail_subject, message, to=[to_email])
+                    send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
+                    send_email.send()
+
+                    return HttpResponse("OK")
+                else:
+                    logger.error(f"Order with order number {order_number} not found.")
             else:
-                logger.error(f"Order with order number {order_number} not found.")
+                order = Order.objects.get(is_ordered=False, order_number=order_number)
+                if order:
+                    # Store transaction details inside Payment model
+                    payment = Payment(
+                        payment_id=transaction_id,
+                        payment_method='Paypal',
+                        amount_paid=order.order_total,
+                        status=status,
+                    )
+                    payment.save()
+                    order.payment = payment
+                    order.is_ordered = True
+                    order.save()
+
+                    cart = Cart.objects.get(cart_id=user[1])
+                    cart_items = CartItem.objects.filter(cart=cart)
+
+                    for item in cart_items:
+                        orderproduct = OrderProduct()
+                        orderproduct.order_id = order.id
+                        orderproduct.payment = payment
+                        orderproduct.product_id = item.product_id
+                        orderproduct.quantity = item.quantity
+                        orderproduct.product_price = item.product.price
+                        orderproduct.ordered = True
+                        orderproduct.save()
+                        cart_item = CartItem.objects.get(id=item.id)
+                        product_variation = cart_item.variation.all()
+
+                        # Reduce the quantity of the sold products
+                        for variation in product_variation:
+                            variation.stock = variation.stock - item.quantity
+                            variation.save()
+                            orderproduct.product_price = variation.variation_price
+                            orderproduct.save()
+
+                        orderproduct = OrderProduct.objects.get(id=orderproduct.id)
+                        orderproduct.variations.set(product_variation)
+                        orderproduct.save()
+
+                        # Reduce the quantity of the sold products
+
+                    # Clear cart
+                    cart = Cart.objects.get(cart_id=user[1])
+                    CartItem.objects.filter(cart=cart).delete()
+
+                    orderproduct = OrderProduct.objects.filter(order=order.id)
+
+                    subtotal = 0
+                    for i in orderproduct:
+                        subtotal += i.product_price * i.quantity
+
+                    # Send order received email to customer
+                    mail_subject = 'Thank you for your order!'
+                    message = render_to_string('orders/order_received_email_user.html', {
+                        'order': order,
+                        'order_product': orderproduct,
+                        'subtotal': subtotal,
+                    })
+                    to_email = user[2]
+                    send_email = EmailMessage(mail_subject, message, to=[to_email])
+                    send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
+                    send_email.send()
+
+                    # Send order email to Meng
+                    mail_subject = 'You received an order'
+                    message = render_to_string('orders/order_received_email_admin.html', {
+                        'user': user[2],
+                        'order': order,
+                        'order_product': orderproduct,
+                        'subtotal': subtotal,
+                    })
+                    to_email = config("EMAIL_HOST_USER")
+                    send_email = EmailMessage(mail_subject, message, to=[to_email])
+                    send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
+                    send_email.send()
+
+                    return HttpResponse("OK")
+                else:
+                    logger.error(f"Order with order number {order_number} not found.")
+
+
         except Exception as e:
             logger.error(f"Error processing IPN: {str(e)}")
     else:

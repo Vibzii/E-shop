@@ -22,18 +22,19 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center border rounded-3">
               <li class="breadcrumb-item active">
-                <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'cart' %}">1. Cart</a>
+                <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'cart' %}">1. Warenkorb</a>
               </li>
               <li class="breadcrumb-item" aria-current="page">2. Address</li>
               <li class="breadcrumb-item" aria-current="page">3. Payment</li>
             </ol>
+
           </nav>
         </div>
         <div class="row">
             <aside class="col-lg-8">
                 <div class="card mb-3 shadow">
                     <h5 class="card-header text-center">
-                        Your Basket
+                        Your Shopping Basket
                     </h5>
                     <div class="px-3 my-4">
                         <table class="table table-borderless table-striped align-middle">
@@ -108,20 +109,33 @@
                     <h5 class="card-header text-center">
                         Summary
                     </h5>
-                    <div class="card-body">
-                        <dl class="row mb-3">
-                            <dt class="col-6">Total:</dt>
-                            <dd class="col-6 text-end">{{ total }} €</dd>
-                        </dl>
-                        <dl class="row mb-3">
-                            <dt class="col-6">Shipping:</dt>
-                            <dd class="col-6 text-end">{{ shipping_cost }} €</dd>
-                        </dl>
-                        <hr>
-                        <dl class="row mb-3">
-                            <dt class="col-6 fw-bold">Grand Total:</dt>
-                            <dd class="col-6 text-end fw-bold">{{ grand_total }} €</dd>
-                        </dl>
+                    <div class="card-body pt-0">
+                        <table class="table table-borderless align-middle">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col" class="text-center" height="100%"></th>
+                                    <th scope="col" class="text-center" height="100%" width="150"></th>
+                                    <th scope="col" class="text-center" height="100%" width="120"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Product Total:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ total }} €</td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ shipping_cost }} €</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Grand Total:</td>
+                                    <td></td>
+                                    <td class="text-center fw-bold">{{ grand_total }} €</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="d-grid gap-2">
                             <a href="{% url 'checkout' %}" class="btn btn-custom-pink w-100 mb-2">Checkout</a>
                             <a href="{% url 'store' %}" class="btn btn-light w-100">Continue Shopping</a>
@@ -129,7 +143,7 @@
                         <hr>
                         <div class="text-center">
                             <i class="fa-brands fa-paypal fa-2xl me-2"></i>
-                            <i class="fa-brands fa-cc-paypal fa-2xl"></i>
+                            <i class="fa-solid fa-credit-card fa-2xl"></i>
                         </div>
                     </div>
                 </div>

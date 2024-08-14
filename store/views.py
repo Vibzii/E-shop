@@ -47,6 +47,8 @@ def product_detail(request, category_slug, product_slug):
     else:
         order_product = False
 
+    category = Category.objects.get(slug=category_slug)
+
     #Get the reviews :
 
     reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
@@ -65,6 +67,7 @@ def product_detail(request, category_slug, product_slug):
         'count_gallery': count_gallery,
         'category_slug': category_slug,
         'product_slug': product_slug,
+        'category': category,
     }
 
     return render(request,'store/product-detail.html', context)

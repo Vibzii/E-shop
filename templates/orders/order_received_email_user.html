@@ -1,11 +1,36 @@
 {% autoescape off %}
-    Hi {{ user.first_name }},
+    <p>Hi {{ order.first_name }},</p>
+    <br>
 
-    <strong>YOUR ORDER HAS BEEN RECEIVED</strong><br><br>
+    <p><strong>Thank you for your order</strong></p>
+    <br>
 
-    <strong>Order Number:</strong> {{ order.order_number }}<br><br>
+    <p><strong>Order Number:</strong> {{ order.order_number }} </p>
+    <br>
+    <p><strong>Billing Address : </strong></p>
+    <br>
+    <p>{{order.first_name}} {{order.last_name}}</p>
+    <p>{{order.address_line_1}} {{order.house_number}}</p>
+    <p>{{order.address_line_2}}</p>
+    <p>{{order.zipcode}} {{order.city}}</p>
+    <p>{{order.country}}</p>
+    <br>
+    <p><strong>Shipping Address : </strong></p>
+    <br>
+    <p>{{order.shipping_first_name}} {{order.shipping_last_name}}</p>
+    <p>{{order.shipping_address_line_1}} {{order.shipping_house_number}}</p>
+    <p>{{order.shipping_address_line_2}}</p>
+    <p>{{order.shipping_zipcode}} {{order.shipping_city}}</p>
+    <p>{{order.shipping_country}}</p>
+    <br>
+    {% if order.order_note %}
 
-    <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+    <p><strong>Order Note : </strong></p>
+    <p>{{order.order_note}}</p>
+    <br>
+    {% endif %}
+
+    <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 50%; margin-bottom: 20px;">
         <thead style="background-color: #f2f2f2;">
             <tr style="text-align: left;">
                 <th>Product</th>
@@ -37,7 +62,7 @@
         </tbody>
     </table>
 
-    <table border="0" cellspacing="0" cellpadding="8" style="width: 100%;">
+    <table border="0" cellspacing="0" cellpadding="0" style="width: 50%;">
         <tr>
             <td colspan="2" style="text-align: right;">Product Total:</td>
             <td style="text-align: center;">{{ subtotal }} €</td>
@@ -51,8 +76,5 @@
             <td style="text-align: center; font-weight: bold;">{{ order.order_total }} €</td>
         </tr>
     </table>
-
-    <br>
-    Thank you for your order!
 
 {% endautoescape %}

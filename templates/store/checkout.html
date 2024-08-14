@@ -30,7 +30,7 @@
                 <div class="card mb-3 shadow">
                     <h5 class="card-header text-center">Your Basket</h5>
                     <div class="px-3 my-4">
-                        <table class="table table-borderless table-striped align-middle">
+                        <table class="table table-borderless table-striped align-middle mb-0">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
                                     <th scope="col">Product</th>
@@ -73,16 +73,35 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                        <hr>
-                        <dl class="row mb-3">
-                            <dt class="col-6 fw-bold text-center">Total with shipping:</dt>
-                            <dd class="col-6 text-center fw-bold">{{ grand_total }} €</dd>
-                        </dl>
-                        <hr>
+                        <table class="table align-middle">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col" class="text-center" height="100%"></th>
+                                    <th scope="col" class="text-center" height="100%" width="150"></th>
+                                    <th scope="col" class="text-center" height="100%" width="120"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Product Total:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ total }} €</td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping:</td>
+                                    <td></td>
+                                    <td class="text-center">{{ shipping }} €</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Grand Total:</td>
+                                    <td></td>
+                                    <td class="text-center fw-bold">{{ grand_total }} €</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </aside>
-
             <!-- Second aside for billing address -->
             <aside class="col-lg-6">
                 <div class="card mb-4 shadow">
@@ -90,42 +109,53 @@
                     <div class="px-3 my-4">
                         <form action="{% url 'payment-product' %}" method="POST">
                             {% csrf_token %}
-                            <div class="row mb-3">
+
+                            <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="first-name" class="form-label">First Name</label>
+                                        <label for="first-name" class="form-label">First Name*</label>
                                         <input type="text" id="first-name" name="first_name" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="last-name" class="form-label">Last Name</label>
+                                        <label for="last-name" class="form-label">Last Name*</label>
                                         <input type="text" id="last-name" name="last_name" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Email*</label>
                                 <input type="email" id="email" name="email" class="form-control" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="address-line-1" class="form-label">Address Line 1</label>
-                                <input type="text" id="address-line-1" name="address_line_1" class="form-control" required>
+                            <div class="row">
+                                <div class="col-9">
+                                        <div class="mb-3">
+                                            <label for="address_line_1" class="form-label">Address Line 1*</label>
+                                            <input type="text" id="address_line_1" name="address_line_1" class="form-control" required>
+                                        </div>
+                                </div>
+                                <div class="col-3">
+                                        <div class="mb-3">
+                                            <label for="house_number" class="form-label">House Nr*</label>
+                                            <input type="text" id="house_number" name="house_number" class="form-control" required>
+                                        </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="address-line-2" class="form-label">Address Line 2</label>
                                 <input type="text" id="address-line-2" name="address_line_2" class="form-control">
                             </div>
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="zipcode" class="form-label">Postcode</label>
+                                        <label for="zipcode" class="form-label">Postcode*</label>
                                         <input type="text" id="zipcode" name="zipcode" pattern="\d{5}" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="city" class="form-label">City</label>
+                                        <label for="city" class="form-label">City*</label>
                                         <input type="text" id="city" name="city" class="form-control" required>
                                     </div>
                                 </div>
@@ -153,14 +183,34 @@
 
                             <!-- Shipping Address Fields -->
                             <div id="shipping-address-fields" style="display: none;">
-                                <h5 class="card-header text-center">Shipping Address</h5>
-                                <div class="my-3">
-                                    <label for="shipping_name" class="form-label">Full Name</label>
-                                    <input type="text" id="shipping_name" name="shipping_name" class="form-control">
+                                <h5 class="card-header text-center mb-3">Shipping Address</h5>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="shipping_first_name" class="form-label">First Name*</label>
+                                            <input type="text" id="shipping_first_name" name="shipping_first_name" class="form-control shipping-required">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="shipping_last_name" class="form-label">Last Name*</label>
+                                            <input type="text" id="shipping_last_name" name="shipping_last_name" class="form-control shipping-required">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="shipping_address_line_1" class="form-label">Address Line 1</label>
-                                    <input type="text" id="shipping_address_line_1" name="shipping_address_line_1" class="form-control">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="mb-3">
+                                            <label for="shipping_address_line_1" class="form-label">Address Line 1*</label>
+                                            <input type="text" id="shipping_address_line_1" name="shipping_address_line_1" class="form-control shipping-required">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="mb-3">
+                                            <label for="shipping_house_number" class="form-label">House Nr*</label>
+                                            <input type="text" id="shipping_house_number" name="shipping_house_number" class="form-control shipping-required">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="shipping_address_line_2" class="form-label">Address Line 2</label>
@@ -169,28 +219,34 @@
                                 <div class="row mb-3">
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label for="shipping_zipcode" class="form-label">Postcode</label>
-                                            <input type="text" id="shipping_zipcode" name="shipping_zipcode" pattern="\d{5}" class="form-control">
+                                            <label for="shipping_zipcode" class="form-label">Postcode*</label>
+                                            <input type="text" id="shipping_zipcode" name="shipping_zipcode" pattern="\d{5}" class="form-control shipping-required">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label for="shipping_city" class="form-label">City</label>
-                                            <input type="text" id="shipping_city" name="shipping_city" class="form-control">
+                                            <label for="shipping_city" class="form-label">City*</label>
+                                            <input type="text" id="shipping_city" name="shipping_city" class="form-control shipping-required">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="shipping_country" class="form-label">Country</label>
                                             <select id="shipping_country" name="shipping_country" class="form-control" readonly>
-                                                <option value="Germany">Deutschland</option>
+                                                <option value="Deutschland">Deutschland</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="agree-to-policy" required>
+                                <label class="form-check-label" for="agree-to-policy">
+                                    I agree to the <a href="{% url 'data_policy' %}" target="_blank">Data Protection Policy</a>
+                                </label>
+                            </div>
 
-                            <button type="submit" class="btn btn-custom-pink w-100" name="submit">Place Order</button>
+                            <button type="submit" class="btn btn-custom-pink w-100" name="submit" id="place-order-button" disabled>Place Order</button>
                             <a href="{% url 'store' %}" class="btn btn-light w-100 mt-2">Continue Shopping</a>
                         </form>
                     </div>
@@ -199,21 +255,29 @@
         </div> <!-- row.// -->
     </div> <!-- container .//  -->
 </section>
-
+<script>
+    // JavaScript to enable the button when the checkbox is checked
+    document.getElementById('agree-to-policy').addEventListener('change', function() {
+        var placeOrderButton = document.getElementById('place-order-button');
+        placeOrderButton.disabled = !this.checked;
+    });
+</script>
 <script>
     document.getElementById('same-address').addEventListener('change', function() {
         var shippingFields = document.getElementById('shipping-address-fields');
-        shippingFields.style.display = this.checked ? 'block' : 'none';
-    });
-    document.getElementById('address-form').addEventListener('submit', function(event) {
-        var country = document.getElementById('country').value;
-        var shippingCountry = document.getElementById('shipping_country').value;
-        if (country !== "Germany" || shippingCountry !== "Germany") {
-            alert('Only German addresses are allowed.');
-            event.preventDefault();
+        var shippingRequiredFields = document.querySelectorAll('.shipping-required');
+
+        if (this.checked) {
+            shippingFields.style.display = 'block';
+            shippingRequiredFields.forEach(function(field) {
+                field.setAttribute('required', 'required');
+            });
+        } else {
+            shippingFields.style.display = 'none';
+            shippingRequiredFields.forEach(function(field) {
+                field.removeAttribute('required');
+            });
         }
     });
 </script>
-
-
 {% endblock %}

@@ -25,6 +25,7 @@ urlpatterns = [
     path('safe_connection/', admin.site.urls),
     path('', views.home, name="home"),
     path('faq/', views.faq, name="faq"),
+    path('data_policy/', views.data_policy, name="data_policy"),
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
     path('accounts/', include('accounts.urls')),

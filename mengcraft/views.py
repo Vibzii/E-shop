@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from store.models import Product, ReviewRating
+from faq.models import Question
 
 def home(request):
 
@@ -21,5 +22,15 @@ def home(request):
 
 
 def faq(request):
+    questions_unsorted = Question.objects.all()
+    questions_sorted = sorted(questions_unsorted, key=lambda x: x.sort_order)
 
-    return render(request, "faq.html")
+    context = {
+        "questions": questions_sorted,
+    }
+    return render(request, "faq.html", context)
+
+
+def data_policy(request):
+
+    return render(request, "data_policy.html")

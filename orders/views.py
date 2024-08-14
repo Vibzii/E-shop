@@ -21,12 +21,14 @@ def payment_product(request):
     if request.user.is_authenticated:
         current_user = request.user
         cart_items = CartItem.objects.filter(user=current_user)
-        print(current_user)
+        is_user = True
     else:
+        is_user = False
         try:
         # Fetch the session cart
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart)
+
         except Cart.DoesNotExist:
             return redirect("login")
 
@@ -63,12 +65,16 @@ def payment_product(request):
             #data.phone = form.cleaned_data['phone']
             data.email = form.cleaned_data['email']
             data.address_line_1 = form.cleaned_data['address_line_1']
+            data.house_number = form.cleaned_data['house_number']
             data.address_line_2 = form.cleaned_data['address_line_2']
             data.country = form.cleaned_data['country']
             data.zipcode = form.cleaned_data['zipcode']
             data.city = form.cleaned_data['city']
-            data.shipping_name = form.cleaned_data['shipping_name']
+            data.shipping_first_name = form.cleaned_data['shipping_first_name']
+            data.shipping_last_name = form.cleaned_data['shipping_last_name']
+
             data.shipping_address_line_1 = form.cleaned_data['shipping_address_line_1']
+            data.shipping_house_number = form.cleaned_data['shipping_house_number']
             data.shipping_address_line_2 = form.cleaned_data['shipping_address_line_2']
             data.shipping_country = form.cleaned_data['shipping_country']
             data.shipping_zipcode = form.cleaned_data['shipping_zipcode']
@@ -89,15 +95,22 @@ def payment_product(request):
             data.save()
 
             order = Order.objects.get(id=data.id, is_ordered=False, order_number=order_number)
+
             # Generate item names from cart items
-            item_names = [item.product.product_name for item in cart_items]
+
+            item_names = []
+            for item in cart_items:
+                item_name = item.product.product_name
+                item_quantity = item.quantity
+                for i in item.variation.all():
+                    variation = i.variation_value
+                    item_combined = f'{item_quantity} {item_name}-{variation}'
+                    item_names.append(item_combined)
             item_name_str = ', '.join(item_names)
-
             if request.user.is_authenticated:
-                custom_value = current_user
+                custom_value = f"{is_user}| |{current_user}"
             else:
-                custom_value = f"cart:{_cart_id(request)}|email:{data.email}"
-
+                custom_value = f"{is_user}|{_cart_id(request)}|{data.email}"
             paypal_checkout = {
                 'business': settings.PAYPAL_RECEIVER_EMAIL,
                 'custom': custom_value,
@@ -153,16 +166,30 @@ def PaymentSuccessful(request, order_number):
         }
         return render(request, 'orders/order_complete.html', context)
     except (Payment.DoesNotExist, Order.DoesNotExist):
-        return redirect('store')
+
+        order = Order.objects.get(order_number=order_number)
+        ordered_products = OrderProduct.objects.filter(order_id=order.id)
+
+        subtotal = 0
+        for i in ordered_products:
+            subtotal += i.product_price * i.quantity
+
+        context = {
+            'order': order,
+            'ordered_products': ordered_products,
+            'order_number': order.order_number,
+            'subtotal': subtotal,
+        }
+        return render(request, 'orders/order_complete_no_payment.html', context)
 
     # *====================  STEP 3 FUNCTION  ======================== #
 
 
 def paymentFailed(request):
+
     product = "All Items"
 
-    return render(request, 'store/payment-failed.html', {'product': product})
+    return render(request, 'orders/order_failed.html', {'product': product})
 
-    # *====================  STEP 4 FUNCTION  ======================== #
 
 

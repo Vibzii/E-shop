@@ -302,3 +302,14 @@ def order_detail(request, order_id):
         'subtotal': subtotal
     }
     return render(request, "accounts/order_detail.html", context)
+
+
+@login_required(login_url="login")
+def delete_account(request):
+    if request.method == "POST":
+        user = Account.objects.get(username__exact=request.user.username)
+        user.delete()
+        auth.logout(request)
+        messages.success(request, "Your account has been successfully deleted")
+        return redirect('login')
+    return render(request, "accounts/delete_account.html")
