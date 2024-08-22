@@ -2,40 +2,40 @@
 {% load static %}
 {% block content %}
 
-<div class="container my-5">
+<div class="container mt-5 d-none d-md-block">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center border rounded-3">
             <li class="breadcrumb-item">
                 <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'cart' %}">
-                1. Cart
+                1. Warenkorb
                 </a>
             </li>
             <li class="breadcrumb-item active">
                 <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'checkout' %}">
-                2. Address
+                2. Adresse
                 </a>
             </li>
             <li class="breadcrumb-item" aria-current="page">
-                3. Payment
+                3. Kasse
             </li>
         </ol>
     </nav>
 </div>
 
-<section class="pb-5">
+<section class="py-4">
     <div class="container">
         <div class="row">
             <!-- First aside for basket -->
             <aside class="col-lg-6">
                 <div class="card mb-3 shadow">
-                    <h5 class="card-header text-center">Your Basket</h5>
-                    <div class="px-3 my-4">
+                    <h5 class="card-header text-center">Warenkorb</h5>
+                    <div id="cart-line" class="px-3 my-4">
                         <table class="table table-borderless table-striped align-middle mb-0">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
-                                    <th scope="col">Product</th>
-                                    <th scope="col" class="text-center" width="150">Quantity</th>
-                                    <th scope="col" class="text-center" width="120">Price</th>
+                                    <th scope="col">Produkte</th>
+                                    <th scope="col" class="text-center" width="150">Anzahl</th>
+                                    <th scope="col" class="text-center" width="120">Preis</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,7 +64,7 @@
                                     <td class="text-center align-middle">
                                         <div class="price-wrap">
                                             <var>{{ cart_item.sub_total }} €</var>
-                                            <small class="text-muted d-block">{{ item.variation_price }} € each</small>
+                                            <small class="text-muted d-block" style="font-size: 11px;">(je {{ item.variation_price }} €)</small>
                                         </div>
                                         {% endfor %}
                                         {% endif %}
@@ -83,17 +83,17 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Product Total:</td>
+                                    <td>Zwischensumme:</td>
                                     <td></td>
                                     <td class="text-center">{{ total }} €</td>
                                 </tr>
                                 <tr>
-                                    <td>Shipping:</td>
+                                    <td>Versandkosten:</td>
                                     <td></td>
                                     <td class="text-center">{{ shipping }} €</td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-bold">Grand Total:</td>
+                                    <td class="fw-bold">Gesamtsumme:</td>
                                     <td></td>
                                     <td class="text-center fw-bold">{{ grand_total }} €</td>
                                 </tr>
@@ -105,7 +105,7 @@
             <!-- Second aside for billing address -->
             <aside class="col-lg-6">
                 <div class="card mb-4 shadow">
-                    <h5 class="card-header text-center">Billing Address</h5>
+                    <h5 class="card-header text-center">Rechnungsadresse</h5>
                     <div class="px-3 my-4">
                         <form action="{% url 'payment-product' %}" method="POST">
                             {% csrf_token %}
@@ -113,55 +113,55 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="first-name" class="form-label">First Name*</label>
-                                        <input type="text" id="first-name" name="first_name" class="form-control" required>
+                                        <label for="first-name" class="form-label">Vorname*</label>
+                                        <input type="text" id="first-name" name="first_name" value="{{user_form.first_name.value}}" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="last-name" class="form-label">Last Name*</label>
-                                        <input type="text" id="last-name" name="last_name" class="form-control" required>
+                                        <label for="last-name" class="form-label">Nachname*</label>
+                                        <input type="text" id="last-name" name="last_name" value="{{user_form.last_name.value}}" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email*</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
+                                <label for="email" class="form-label">E-Mail*</label>
+                                <input type="email" id="email" name="email" value="{{user_form.email.value}}" class="form-control" required>
                             </div>
                             <div class="row">
                                 <div class="col-9">
                                         <div class="mb-3">
-                                            <label for="address_line_1" class="form-label">Address Line 1*</label>
-                                            <input type="text" id="address_line_1" name="address_line_1" class="form-control" required>
+                                            <label for="address_line_1" class="form-label">Straße*</label>
+                                            <input type="text" id="address_line_1" name="address_line_1" class="form-control" value="{{profile_form.address_line_1.value}}" required>
                                         </div>
                                 </div>
                                 <div class="col-3">
                                         <div class="mb-3">
-                                            <label for="house_number" class="form-label">House Nr*</label>
-                                            <input type="text" id="house_number" name="house_number" class="form-control" required>
+                                            <label for="house_number" class="form-label">Nr.*</label>
+                                            <input type="text" id="house_number" name="house_number" value="{{profile_form.house_number.value}}" class="form-control" required>
                                         </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="address-line-2" class="form-label">Address Line 2</label>
-                                <input type="text" id="address-line-2" name="address_line_2" class="form-control">
+                                <label for="address-line-2" class="form-label">Adresszusatz</label>
+                                <input type="text" id="address-line-2" name="address_line_2" value="{{profile_form.address_line_2.value}}" class="form-control">
                             </div>
                             <div class="row">
-                                <div class="col">
+                                <div class="col-6 col-md-4">
                                     <div class="mb-3">
-                                        <label for="zipcode" class="form-label">Postcode*</label>
-                                        <input type="text" id="zipcode" name="zipcode" pattern="\d{5}" class="form-control" required>
+                                        <label for="zipcode" class="form-label">Postleitzahl*</label>
+                                        <input type="text" id="zipcode" name="zipcode" pattern="\d{5}" class="form-control" value="{{profile_form.zipcode.value}}" required>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-6 col-md-4">
                                     <div class="mb-3">
-                                        <label for="city" class="form-label">City*</label>
-                                        <input type="text" id="city" name="city" class="form-control" required>
+                                        <label for="city" class="form-label">Stadt*</label>
+                                        <input type="text" id="city" name="city" value="{{profile_form.city.value}}" class="form-control" required>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-12 col-md-4">
                                     <div class="mb-3">
-                                        <label for="country" class="form-label">Country</label>
+                                        <label for="country" class="form-label">Land</label>
                                         <select id="country" name="country" class="form-control" readonly>
                                             <option value="Deutschland">Deutschland</option>
                                         </select>
@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="order-note" class="form-label">Order Note</label>
+                                <label for="order-note" class="form-label">Nachricht</label>
                                 <textarea id="order-note" name="order_note" rows="5" class="form-control"></textarea>
                             </div>
 
@@ -177,23 +177,23 @@
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="same-address">
                                 <label class="form-check-label" for="same-address">
-                                    Shipping address is different from billing address
+                                    Die Lieferadresse entspricht nicht der Rechnungsadresse.
                                 </label>
                             </div>
 
                             <!-- Shipping Address Fields -->
                             <div id="shipping-address-fields" style="display: none;">
-                                <h5 class="card-header text-center mb-3">Shipping Address</h5>
+                                <h5 class="card-header text-center mb-3">Lieferadresse</h5>
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label for="shipping_first_name" class="form-label">First Name*</label>
+                                            <label for="shipping_first_name" class="form-label">Vorname*</label>
                                             <input type="text" id="shipping_first_name" name="shipping_first_name" class="form-control shipping-required">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label for="shipping_last_name" class="form-label">Last Name*</label>
+                                            <label for="shipping_last_name" class="form-label">Nachname*</label>
                                             <input type="text" id="shipping_last_name" name="shipping_last_name" class="form-control shipping-required">
                                         </div>
                                     </div>
@@ -201,37 +201,37 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="mb-3">
-                                            <label for="shipping_address_line_1" class="form-label">Address Line 1*</label>
+                                            <label for="shipping_address_line_1" class="form-label">Straße*</label>
                                             <input type="text" id="shipping_address_line_1" name="shipping_address_line_1" class="form-control shipping-required">
                                         </div>
                                     </div>
                                     <div class="col-3">
                                         <div class="mb-3">
-                                            <label for="shipping_house_number" class="form-label">House Nr*</label>
+                                            <label for="shipping_house_number" class="form-label">Nr.*</label>
                                             <input type="text" id="shipping_house_number" name="shipping_house_number" class="form-control shipping-required">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="shipping_address_line_2" class="form-label">Address Line 2</label>
+                                    <label for="shipping_address_line_2" class="form-label">Adresszusatz</label>
                                     <input type="text" id="shipping_address_line_2" name="shipping_address_line_2" class="form-control">
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col">
+                                    <div class="col-6 col-md-4">
                                         <div class="mb-3">
-                                            <label for="shipping_zipcode" class="form-label">Postcode*</label>
+                                            <label for="shipping_zipcode" class="form-label">Postleitzahl*</label>
                                             <input type="text" id="shipping_zipcode" name="shipping_zipcode" pattern="\d{5}" class="form-control shipping-required">
                                         </div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-6 col-md-4">
                                         <div class="mb-3">
-                                            <label for="shipping_city" class="form-label">City*</label>
+                                            <label for="shipping_city" class="form-label">Stadt*</label>
                                             <input type="text" id="shipping_city" name="shipping_city" class="form-control shipping-required">
                                         </div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-12 col-md-4">
                                         <div class="mb-3">
-                                            <label for="shipping_country" class="form-label">Country</label>
+                                            <label for="shipping_country" class="form-label">Land</label>
                                             <select id="shipping_country" name="shipping_country" class="form-control" readonly>
                                                 <option value="Deutschland">Deutschland</option>
                                             </select>
@@ -242,12 +242,12 @@
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="agree-to-policy" required>
                                 <label class="form-check-label" for="agree-to-policy">
-                                    I agree to the <a href="{% url 'data_policy' %}" target="_blank">Data Protection Policy</a>
+                                    Mit deiner Bestellung erklärst du dich mit unserem <a href="{% url 'faq' %}" target="_blank">Allgemeinen Geschäftsbedingungen</a> und <a href="{% url 'faq' %}" target="_blank">Widerrufsbestimmungen</a> einverstanden.*
                                 </label>
                             </div>
 
-                            <button type="submit" class="btn btn-custom-pink w-100" name="submit" id="place-order-button" disabled>Place Order</button>
-                            <a href="{% url 'store' %}" class="btn btn-light w-100 mt-2">Continue Shopping</a>
+                            <button type="submit" class="btn btn-custom-pink w-100" name="submit" id="place-order-button" disabled><i class="fa-regular fa-circle-right fa-lg"></i> Weiter zur Kasse</button>
+                            <a href="{% url 'store' %}" class="btn btn-light w-100 mt-2"><i class="fa-solid fa-circle-left fa-lg"></i> Weiter einkaufen</a>
                         </form>
                     </div>
                 </div>
@@ -261,8 +261,7 @@
         var placeOrderButton = document.getElementById('place-order-button');
         placeOrderButton.disabled = !this.checked;
     });
-</script>
-<script>
+
     document.getElementById('same-address').addEventListener('change', function() {
         var shippingFields = document.getElementById('shipping-address-fields');
         var shippingRequiredFields = document.querySelectorAll('.shipping-required');

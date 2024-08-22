@@ -8,34 +8,34 @@
     <div class="container">
 
         <!-- ============================ COMPONENT 1 ================================= -->
-        <div class="container my-5">
+        <div class="container mt-5 d-none d-md-block">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center border rounded-3">
                     <li class="breadcrumb-item">
                         <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'cart' %}">
-                        1. Cart
+                        1. Warenkorb
                         </a>
                     </li>
                     <li class="breadcrumb-item">
                         <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'checkout' %}">
-                        2. Address
+                        2. Adresse
                         </a>
                     </li>
                     <li class="breadcrumb-item active">
                         <a class="link-body-emphasis fw-semibold text-decoration-none" href="#">
-                        3. Payment
+                        3. Kasse
                         </a>
                     </li>
                 </ol>
             </nav>
         </div>
 
-        <div class="row">
+        <div class="row mt-5">
             <aside class="col-lg-8">
                 <div class="card mb-3 shadow">
-                    <h5 class="text-center card-header">Billing Address</h5>
+                    <h5 class="text-center card-header">Rechnungsadresse</h5>
                     <div class="card-body px-5 py-3">
-                    <b>Billing Address: </b>
+                    <b>Rechnungsadresse: </b>
                     <br>
                     <p class="card-text mb-0">{{ order.full_name }}</p>
                     <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
@@ -45,12 +45,12 @@
                     <p class="card-text mb-0">{{ order.zipcode }}, {{ order.city }}</p>
                     <p class="card-text mb-0">{{ order.country }}</p>
                     <br>
-                    <b>Contact: </b>
+                    <b>E-Mail: </b>
                     <br>
                     <p class="card-text mb-0">{{ order.email }}</p>
                     {% if order.order_note %}
                     <br>
-                    <b>Order Note: </b>
+                    <b>Nachricht: </b>
                     <br>
                     <p class="card-text mb-0">{{ order.order_note }}</p>
                     {% endif %}
@@ -58,9 +58,9 @@
                 </div> <!-- card.// -->
                 {% if order.shipping_city %}
                     <div class="card shadow">
-                        <h5 class="text-center card-header">Shipping Address</h5>
+                        <h5 class="text-center card-header">Lieferadresse</h5>
                         <div class="card-body px-5 py-3">
-                        <b>Shipping Address: </b>
+                        <b>Lieferadresse: </b>
                         <br>
                         <p class="card-text mb-0">{{ order.shipping_first_name }} {{ order.shipping_last_name }}</p>
                         <p class="card-text mb-0">{{ order.shipping_address_line_1 }} {{ order.shipping_house_number }}</p>
@@ -73,9 +73,9 @@
                     </div> <!-- card.// -->
                 {% else %}
                     <div class="card shadow">
-                        <h5 class="text-center card-header">Shipping Address</h5>
+                        <h5 class="text-center card-header">Lieferadresse</h5>
                         <div class="card-body px-5 py-3">
-                        <b>Shipping Address: </b>
+                        <b>Lieferadresse: </b>
                         <br>
                         <p class="card-text mb-0">{{ order.full_name }}</p>
                         <p class="card-text mb-0">{{ order.address_line_1 }} {{order.house_number}}</p>
@@ -90,15 +90,15 @@
                 {% endif %}
                 <div class="card">
                     <h5 class="card-header text-center">
-                        Review Products
+                        Bestellübersicht
                     </h5>
-                    <div class="card px-3 py-3">
+                    <div class="card px-3 py-3" id="cart-line">
                     <table class="table table-borderless table-striped align-middle">
                         <thead class="text-muted">
                             <tr class="small text-uppercase">
-                                <th scope="col">Product</th>
-                                <th scope="col" class="text-center" width="150">Quantity</th>
-                                <th scope="col" class="text-center" width="120">Price</th>
+                                <th scope="col">Produkte</th>
+                                <th scope="col" class="text-center" width="150">Anzahl</th>
+                                <th scope="col" class="text-center" width="120">Preis</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,7 +128,7 @@
                                 <td class="text-center align-middle">
                                     <div class="price-wrap">
                                         <var>{{ cart_item.sub_total }} €</var>
-                                        <small class="text-muted d-block">{{ item.variation_price }} € each</small>
+                                        <small class="text-muted d-block" style="font-size: 11px;">(je {{ item.variation_price }} €)</small>
                                     </div>
 
                                         {% endfor %}
@@ -142,11 +142,11 @@
             </aside> <!-- col.// -->
 
             <aside class="col-lg-4 mx-auto">
-                <div class="card shadow">
+                <div class="card shadow mb-3">
                     <h5 class="card-header text-center">
-                        Payment
+                        Bezahlung
                     </h5>
-                    <div class="card-body align-items-center pt-0">
+                    <div class="card-body align-items-center pt-0 ">
                         <table class="table table-borderless align-middle">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
@@ -157,17 +157,17 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Product Total:</td>
+                                    <td>Zwischensumme:</td>
                                     <td></td>
                                     <td class="text-center">{{ total }} €</td>
                                 </tr>
                                 <tr>
-                                    <td>Shipping:</td>
+                                    <td>Versandkosten:</td>
                                     <td></td>
                                     <td class="text-center">{{ shipping }} €</td>
                                 </tr>
-                                <tr>
-                                    <td class="fw-bold">Grand Total:</td>
+                                <tr class="border-top">
+                                    <td class="fw-bold">Gesamtsumme:</td>
                                     <td></td>
                                     <td class="text-center fw-bold">{{ grand_total }} €</td>
                                 </tr>
@@ -176,6 +176,12 @@
                         <div id="paypal-button-container" class="text-center">
                             <!-- PayPal Button Will Load Here -->
                             {{ paypal.render }}
+                        </div>
+
+                        <div class="text-center pt-3 px-2">
+                            <i class="fa-brands fa-cc-paypal fa-2xl"></i>
+                            <i class="fa-solid fa-credit-card fa-2xl"></i>
+
                         </div>
                     </div> <!-- card-body -->
                 </div> <!-- card -->

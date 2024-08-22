@@ -63,6 +63,15 @@ class Order(models.Model):
     def full_address(self):
         return f'{self.address_line_1} {self.address_line_2}'
 
+    def variation_names(self):
+        variations = []
+        order_products = OrderProduct.objects.filter(order=self)
+        for order_product in order_products:
+            for variation in order_product.variations.all():
+                variations.append(f'{order_product.quantity} {order_product.product.product_name} ({variation.variation_value})')
+
+        return ', '.join(variations)
+
     def __str__(self):
         return self.first_name
 

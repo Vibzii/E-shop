@@ -1,3 +1,4 @@
+from django.contrib.messages.storage import default_storage
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from .forms import RegistrationForm, UserForm, UserProfileForm
 from .models import Account, UserProfile
@@ -15,6 +16,9 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == "POST":
@@ -23,13 +27,10 @@ def register(request):
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
-            phone_number = form.cleaned_data["phone_number"]
             password = form.cleaned_data["password"]
             username = email.split("@")[0]
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, password=password, username=username)
-            user.phone_number = phone_number
             user.save()
-
             # Create User Profile
             profile = UserProfile()
             profile.user_id = user.id
@@ -39,7 +40,7 @@ def register(request):
             # USER ACTIVATION
 
             current_site = get_current_site(request)
-            mail_subject = "Please activate your account"
+            mail_subject = "Registrierung bei Mengcraft 😊"
             message = render_to_string("accounts/account_verification_email.html", {
 
                 "user": user,
@@ -50,6 +51,7 @@ def register(request):
 
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
             send_email.send()
             #messages.success(request, "Thank you for your registration. We have sent you a verification email. Please verify it")
             return redirect("/accounts/login/?command=verification&email="+email)
@@ -111,7 +113,7 @@ def login(request):
                 pass
 
             auth.login(request, user)
-            messages.success(request, "You are now logged in")
+            messages.success(request, "Du bist angemeldet.")
             url = request.META.get('HTTP_REFERER')
             try:
                 query = requests.utils.urlparse(url).query
@@ -120,10 +122,10 @@ def login(request):
                     nextPage = params["next"]
                     return redirect(nextPage)
             except:
-                return redirect('dashboard')
+                return redirect('store')
 
         else:
-            messages.error(request, 'Invalid login')
+            messages.error(request, 'Bitte E-Mail oder Passwort überprüfen.')
             return redirect('login')
 
     return render(request, "accounts/login.html")
@@ -132,7 +134,7 @@ def login(request):
 @login_required(login_url="login")
 def logout(request):
     auth.logout(request)
-    messages.success(request, "You are logged out")
+    messages.success(request, "Du bist abgemeldet.")
     return redirect('login')
 
 
@@ -146,11 +148,12 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, "Your account has been activated")
+        logger.info(f"File being saved to: {settings.default_storage}")
+        messages.success(request, "Dein Profil ist aktiviert.")
         return redirect("login")
 
     else:
-        messages.error(request, "Invalid activation link")
+        messages.error(request, "Der Aktivierungslink ist abgelaufen.")
         return redirect('register')
 
 @login_required(login_url="login")
@@ -171,7 +174,7 @@ def forgotPassword(request):
             user = Account.objects.get(email__exact=email)
             #reset password email
             current_site = get_current_site(request)
-            mail_subject = "Reset Your Password"
+            mail_subject = "Passwort zurücksetzen"
             message = render_to_string("accounts/reset_password_email.html", {
 
                 "user": user,
@@ -182,11 +185,12 @@ def forgotPassword(request):
 
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
             send_email.send()
-            messages.success(request,"Password reset email has been sent to your email address.")
+            messages.success(request,"Der Link zum Zurücksetzen deines Passwortes wurde an deine angegebene E-Mail Adresse geschickt.")
             return redirect('login')
         else:
-            messages.error(request, "Account does not exist")
+            messages.error(request, "Dieses Profil existiert nicht.")
             return redirect('forgotPassword')
 
     return render(request, "accounts/forgotPassword.html")
@@ -201,10 +205,9 @@ def resetpassword_validate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
 
        request.session["uid"]= uid
-       messages.success(request, "Please reset your password")
        return redirect('resetPassword')
     else:
-        messages.error(request, "This link has been expired")
+        messages.error(request, "Der Aktivierungslink ist nicht mehr gültig.")
         return redirect('login')
 
 
@@ -218,11 +221,11 @@ def resetPassword(request):
             user = Account.objects.get(pk=uid)
             user.set_password(password)
             user.save()
-            messages.success(request, "Password reset successful")
+            messages.success(request, "Das Passwort wurde erfolgreich geändert.")
             return redirect('login')
 
         else:
-            messages.error(request, "Passwords do no match")
+            messages.error(request, "Die Passwörter stimmen nicht überein.")
             return redirect('resetPassword')
 
     else:
@@ -247,9 +250,10 @@ def edit_profile(request):
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
         if user_form.is_valid() and profile_form.is_valid():
+            logger.info(f"File being saved to: {default_storage}")
             user_form.save()
             profile_form.save()
-            messages.success(request, "Your profile has been updated")
+            messages.success(request, "Dein Profil wurde aktualisiert.")
             return redirect("edit_profile")
     else:
         user_form = UserForm(instance=request.user)
@@ -276,13 +280,13 @@ def change_password(request):
                 user.set_password(new_password)
                 user.save()
 
-                messages.success(request, "Password updated successfully")
+                messages.success(request, "Dein Passwort wurde erfolgreich geändert.")
                 return redirect("change_password")
             else:
-                messages.error(request, "Please enter valid current password")
+                messages.error(request, "Dein aktuelles Passwort ist nicht korrekt.")
                 return redirect("change_password")
         else:
-            messages.error(request, 'Password does not match !')
+            messages.error(request, 'Die Passwörter stimmen nicht überein.')
             return redirect("change_password")
     return render(request, "accounts/change_password.html")
 
@@ -310,6 +314,6 @@ def delete_account(request):
         user = Account.objects.get(username__exact=request.user.username)
         user.delete()
         auth.logout(request)
-        messages.success(request, "Your account has been successfully deleted")
+        messages.success(request, "Dein Profil wurde erfolgreich gelöscht.")
         return redirect('login')
     return render(request, "accounts/delete_account.html")

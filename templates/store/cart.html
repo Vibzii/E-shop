@@ -11,38 +11,35 @@
         <!-- ============================ COMPONENT 1 ================================= -->
         {% if not cart_items %}
         <div class="my-5">
-            <h2 class="text-center">Your Shopping Cart is Empty</h2>
+            <h2 class="text-center">Dein Warenkorb ist noch leer.</h2>
             <br>
             <div class="text-center">
-                <a href="{% url 'store' %}" class="btn btn-custom-pink">Continue Shopping</a>
+                <a href="{% url 'store' %}" class="btn btn-custom-pink">Weiter einkaufen</a>
             </div>
         </div>
         {% else %}
-        <div class="container mb-5 mt-4">
+        <div class="container mb-5 mt-4 d-none d-md-block">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center border rounded-3">
               <li class="breadcrumb-item active">
                 <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'cart' %}">1. Warenkorb</a>
               </li>
-              <li class="breadcrumb-item" aria-current="page">2. Address</li>
-              <li class="breadcrumb-item" aria-current="page">3. Payment</li>
+              <li class="breadcrumb-item" aria-current="page">2. Adresse</li>
+              <li class="breadcrumb-item" aria-current="page">3. Kasse</li>
             </ol>
-
           </nav>
         </div>
         <div class="row">
             <aside class="col-lg-8">
                 <div class="card mb-3 shadow">
-                    <h5 class="card-header text-center">
-                        Your Shopping Basket
-                    </h5>
-                    <div class="px-3 my-4">
+                    <h5 class="card-header text-center">Warenkorb</h5>
+                    <div id="cart-line" class="px-3 my-4" >
                         <table class="table table-borderless table-striped align-middle">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
-                                    <th scope="col">Product</th>
-                                    <th scope="col" class="text-center" width="150">Quantity</th>
-                                    <th scope="col" class="text-center" width="120">Price</th>
+                                    <th scope="col">Produkte</th>
+                                    <th scope="col" class="text-center" width="150">Anzahl</th>
+                                    <th scope="col" class="text-center" width="120">Preis</th>
                                     <th scope="col" width="120"></th>
                                 </tr>
                             </thead>
@@ -52,23 +49,22 @@
                                     <td>
                                         {% if cart_item.variation.all %}
                                             {% for item in cart_item.variation.all %}
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0">
-                                                        <img src="{{ item.image.url }}" class="img-fluid img-thumbnail square-image" alt="{{ cart_item.product.product_name }}" style="max-width: 80px;">
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <a href="{{cart_item.product.get_url}}" class="fw-bold text-dark text-decoration-none">{{ cart_item.product.product_name }}</a>
-                                                        <p class="text-muted small mb-0">
-                                                            {{ item.variation_category|capfirst }}: {{ item.variation_value|capfirst }}<br>
+                                            <div class="d-flex align-items-center product-info">
+                                                <div class="flex-shrink-0">
+                                                    <img src="{{ item.image.url }}" class="img-fluid img-thumbnail square-image product-image" alt="{{ cart_item.product.product_name }}">
+                                                </div>
+                                                <div class="flex-grow-1 ms-3 product-details">
+                                                    <a href="{{cart_item.product.get_url}}" class="fw-bold text-dark text-decoration-none product-name">{{ cart_item.product.product_name }}</a>
+                                                    <p class="text-muted small mb-0 product-variation">
+                                                        {{ item.variation_category|capfirst }}: {{ item.variation_value|capfirst }}<br>
+                                                    </p>
+                                                </div>
+                                            </div>
                                             {% endfor %}
                                         {% endif %}
-                                                        </p>
-                                                    </div>
-                                                </div>
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center align-items-center flex-wrap">
-                                            <!-- Quantity Dropdown -->
                                             <form action="{% url 'update_cart_quantity' cart_item.product.id cart_item.id %}" method="POST">
                                                 {% csrf_token %}
                                                 {% for item in cart_item.variation.all %}
@@ -79,8 +75,8 @@
                                                         </option>
                                                     {% endfor %}
                                                 </select>
-                                                    <input type="hidden" name="{{ item.variation_category|lower }}"
-                                                           value="{{ item.variation_value|capfirst }}">
+                                                <input type="hidden" name="{{ item.variation_category|lower }}"
+                                                       value="{{ item.variation_value|capfirst }}">
                                                 {% endfor %}
                                             </form>
                                         </div>
@@ -90,7 +86,7 @@
                                         <div class="price-wrap">
                                             <var class="price">{{ cart_item.sub_total }} €</var>
                                             {% for item in cart_item.variation.all %}
-                                                <small class="text-muted d-block">{{ item.variation_price }} € each</small>
+                                            <small class="text-muted d-block" style="font-size: 11px;">(je {{ item.variation_price }} €)</small>
                                             {% endfor %}
                                         </div>
                                     </td>
@@ -102,12 +98,12 @@
                             </tbody>
                         </table>
                     </div>
-                </div> <!-- card.// -->
-            </aside> <!-- col.// -->
+                </div>
+            </aside>
             <aside class="col-lg-4">
                 <div class="card border-0 shadow-sm">
                     <h5 class="card-header text-center">
-                        Summary
+                        Warenkorb-Summe
                     </h5>
                     <div class="card-body pt-0">
                         <table class="table table-borderless align-middle">
@@ -120,29 +116,29 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Product Total:</td>
+                                    <td>Zwischensumme:</td>
                                     <td></td>
-                                    <td class="text-center">{{ total }} €</td>
+                                    <td class="text-center price">{{ total }} €</td>
                                 </tr>
                                 <tr>
-                                    <td>Shipping:</td>
+                                    <td>Versandkosten:</td>
                                     <td></td>
-                                    <td class="text-center">{{ shipping_cost }} €</td>
+                                    <td class="text-center price">{{ shipping_cost }} €</td>
                                 </tr>
-                                <tr>
-                                    <td class="fw-bold">Grand Total:</td>
+                                <tr class="border-top">
+                                    <td class="fw-bold">Gesamtsumme:</td>
                                     <td></td>
-                                    <td class="text-center fw-bold">{{ grand_total }} €</td>
+                                    <td class="text-center fw-bold price">{{ grand_total }} €</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="d-grid gap-2">
-                            <a href="{% url 'checkout' %}" class="btn btn-custom-pink w-100 mb-2">Checkout</a>
-                            <a href="{% url 'store' %}" class="btn btn-light w-100">Continue Shopping</a>
+                            <a href="{% url 'checkout' %}" class="btn btn-custom-pink w-100 mb-2"><i class="fa-regular fa-circle-right fa-lg"></i> Weiter zur Adresseingabe</a>
+                            <a href="{% url 'store' %}" class="btn btn-light w-100"><i class="fa-solid fa-circle-left fa-lg"></i> Weiter einkaufen</a>
                         </div>
                         <hr>
                         <div class="text-center">
-                            <i class="fa-brands fa-paypal fa-2xl me-2"></i>
+                            <i class="fa-brands fa-cc-paypal fa-2xl"></i>
                             <i class="fa-solid fa-credit-card fa-2xl"></i>
                         </div>
                     </div>

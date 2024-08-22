@@ -1,11 +1,10 @@
 <aside class="col-md-3">
 		<ul class="list-group shadow">
-			<a class="list-group-item {% if '/accounts/' == request.path %}active{% endif %}" href="{% url 'dashboard' %}"> My Profile </a>
-			<a class="list-group-item {% if '/my_orders/' in request.path %}active{% endif %}" href="{% url 'my_orders' %}"> My Orders </a>
-			<a class="list-group-item {% if '/edit_profile/' in request.path %}active{% endif %}" href="{% url 'edit_profile' %}"> Edit Profile </a>
-			<a class="list-group-item {% if '/change_password/' in request.path %}active{% endif %}" href="{% url 'change_password' %}"> Change Password </a>
-			<a class="list-group-item {% if '/delete_account/' in request.path %}active{% endif %}" href="{% url 'delete_account' %}"> Delete Account </a>
+			<a class="list-group-item {% if '/my_orders/' in request.path %}active{% endif %}" href="{% url 'my_orders' %}"> Meine Bestellungen </a>
+			<a class="list-group-item {% if '/edit_profile/' in request.path %}active{% endif %}" href="{% url 'edit_profile' %}"> Profil bearbeiten </a>
+			<a class="list-group-item {% if '/change_password/' in request.path %}active{% endif %}" href="{% url 'change_password' %}"> Passwort ändern </a>
+			<a class="list-group-item {% if '/delete_account/' in request.path %}active{% endif %}" href="{% url 'delete_account' %}"> Profil löschen </a>
 
 		</ul>
 		<br>
-	</aside>
+</aside>

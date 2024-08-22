@@ -5,12 +5,14 @@
 
 
 <!-- ========================= SECTION CONTENT ========================= -->
+{% include 'includes/alerts.html' %}
+
   <div class="px-4 py my-4 text-center">
 
 	{% if 'search' in request.path %}
-    	<h1 class="display-5 fw-bold text-body-emphasis">My Store</h1>
+    	<h1 class="display-5 fw-bold text-body-emphasis">Häkelbude</h1>
 	{% else %}
-		<h1 class="display-5 fw-bold text-body-emphasis">My Store</h1>
+		<h1 class="display-5 fw-bold text-body-emphasis">Häkelbude</h1>
 	{% endif %}
   </div>
 
@@ -20,7 +22,7 @@
     <div class="container justify-content-center text-center">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/store/' %}active{% endif %}" aria-current="page" href="{% url 'store' %}">All Products</a>
+          <a class="nav-link {% if request.path == '/store/' %}active{% endif %}" aria-current="page" href="{% url 'store' %}">Alle Produkte |</a>
         </li>
         {% for category in links %}
         <li class="nav-item">
@@ -31,12 +33,14 @@
     </div>
   </nav>
 </div>
-{% if 'patterns' in request.path %}
+{% if 'hakelanleitungen' in request.path %}
 	<div class="container pt-20">
 		<div class="py-40">
 			<br>
 			<br>
-    		<h2 class="display-5 text-body-emphasis text-center"> Coming Soon </h2>
+    		<h2 class="display-5 text-body-emphasis text-center"> Ich arbeite daran </h2>
+			<h2 class="display-5 text-body-emphasis text-center">😊</h2>
+
 			<br>
 			<br>
 		</div>
@@ -44,27 +48,27 @@
 {% else %}
 
 
-<section class="padding-box">
+<section class="padding-box pb-0">
 <div class="container">
 
 <header class="border-bottom mb-4 pb-3">
 		<div class="form-inline">
-			<span class="mr-md-auto">{{product_count}} Items found </span>
+			<span class="mr-md-auto">{{product_count}} Ergebnisse </span>
 		</div>
 </header>
 		<div class="row py-3">
 			{% if products %}
 				{% for product in products %}
-				<div class="col-md-3">
+				<div class="col-6 col-md-3">
 					<div class="card h-100">
 						<a href="{{product.get_url}}" class="img-wrap">
 							<img src="{{product.images.url}}" class="card-img-top" alt="{{product.product_name}}">
 						</a>
 						<div class="card-body text-center">
 							<a href="{{product.get_url}}" class="card-title d-block text-decoration-none">{{product.product_name}}</a>
-							<div class="price-text mt-1">from {{product.price}} EUR</div>
+							<div class="price-text mt-1">ab {{product.price}} €</div>
 							<div class="mt-2">
-								<a href="{{product.get_url}}" class="btn btn-block btn-custom-pink">View Details </a>
+								<a href="{{product.get_url}}" class="btn btn-block btn-custom-pink">Details </a>
 							</div>
 							<div class="rating-star mt-2">
 								{% if product.averageReview %}
@@ -83,7 +87,7 @@
 				{% endfor %}
 			{% else %}
 				<div>
-					<h2>No result found</h2>
+					<h2>Keine Ergebnisse</h2>
 				</div>
 			{% endif %}
 		</div> <!-- row.// -->

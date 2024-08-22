@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from store.models import Product, Variation
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
+from accounts.models import UserProfile
+from accounts.forms import UserForm, UserProfileForm
 
 # Create your views here.
 
@@ -214,6 +215,11 @@ def cart(request, total=0, quantity=0, cart_items=None, max_shipping=0, grand_to
             for item in cart_item.variation.all():
                 total += (item.variation_price * cart_item.quantity)
                 quantity += cart_item.quantity
+                gallery_image = cart_item.product.productgallery_set.filter(variation=item).first()
+                if gallery_image:
+                    cart_item.gallery_image = gallery_image.image.url
+                else:
+                    cart_item.gallery_image = cart_item.product.images.url
 
             if cart_item.product.shipping > max_shipping:
                 max_shipping= cart_item.product.shipping
@@ -235,10 +241,16 @@ def cart(request, total=0, quantity=0, cart_items=None, max_shipping=0, grand_to
 
     return render(request, 'store/cart.html', context)
 def checkout(request, total=0, quantity=0,grand_total=0, cart_items=None, max_shipping=0):
+    userprofile = None
+    user_form = None
+    profile_form = None
     try:
         tax=0
         grand_total =0
         if request.user.is_authenticated:
+            userprofile = get_object_or_404(UserProfile, user=request.user)
+            user_form = UserForm(instance=request.user)
+            profile_form = UserProfileForm(instance=userprofile)
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
         else:
 
@@ -250,6 +262,11 @@ def checkout(request, total=0, quantity=0,grand_total=0, cart_items=None, max_sh
             for item in cart_item.variation.all():
                 total += (item.variation_price * cart_item.quantity)
                 quantity += cart_item.quantity
+                gallery_image = cart_item.product.productgallery_set.filter(variation=item).first()
+                if gallery_image:
+                    cart_item.gallery_image = gallery_image.image.url
+                else:
+                    cart_item.gallery_image = cart_item.product.images.url
 
             if cart_item.product.shipping > max_shipping:
                 max_shipping = cart_item.product.shipping
@@ -267,6 +284,9 @@ def checkout(request, total=0, quantity=0,grand_total=0, cart_items=None, max_sh
         'shipping': max_shipping,
         'quantity': quantity,
         'cart_items': cart_items,
+        'user_form': user_form,
+        'profile_form': profile_form,
+
         #'tax': tax,
     }
     return render(request, "store/checkout.html", context)

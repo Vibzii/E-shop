@@ -11,11 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from dotenv import load_dotenv
 from decouple import config
-import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+# Build paths inside the projepct like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
@@ -46,9 +45,9 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'paypal.standard.ipn',
-    'admin_honeypot',
     'contact',
     'faq',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -94,8 +93,12 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config("DATABASE_NAME"),
+        'USER': config("DATABASE_USER"),
+        'PASSWORD': config("DATABASE_PASSWORD"),
+        'HOST': config("DATABASE_HOST"),
+        'PORT': config("DATABASE_PORT"),
     }
 }
 
@@ -134,16 +137,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [
-    "mengcraft/static",
-]
+#STATIC_URL = 'static/'
+#STATIC_ROOT = BASE_DIR / 'static'
+#STATICFILES_DIRS = [
+#    "mengcraft/static",
+#]
 
 # media file config
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = BASE_DIR / 'media'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -161,8 +166,6 @@ MESSAGE_TAGS = {
 
 # SMTP config
 
-load_dotenv(r"C:\Users\vince\Desktop\webshop-project\.env")
-
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
@@ -175,19 +178,38 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 PAYPAL_RECEIVER_EMAIL = config("PAYPAL_RECEIVER_EMAIL")
 PAYPAL_TEST = True  # Set to False for production
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://b489-2003-e9-d710-10b9-8d1b-2593-54a0-4912.ngrok-free.app',
-
-]
+CSRF_TRUSTED_ORIGINS = ['http://webshop-project-dev.us-east-1.elasticbeanstalk.com/']
 
 
 PAYPAL_BUY_BUTTON_IMAGE = config('PAYPAL_BUTTON_IMAGE')
 
-if not PAYPAL_BUY_BUTTON_IMAGE:
-    raise ImproperConfiguration("PAYPAL_BUTTON_IMAGE environment variable not set")
+#if not PAYPAL_BUY_BUTTON_IMAGE:
+#    raise ImproperConfiguration("PAYPAL_BUTTON_IMAGE environment variable not set")
 
 SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-SESSION_TIMEOUT_REDIRECT = 'accounts/login'
+SESSION_TIMEOUT_REDIRECT = '/accounts/login'
 
 
+# AWS Credentials and Bucket Information
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+
+# Use S3 for storing uploaded files (media)
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# S3 Custom Domain (optional but recommended)
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+# Media settings
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+MEDIA_ROOT = BASE_DIR / 'media'  # This will be used locally
+
+# Static files settings (already working)
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Ensure this is also set correctly for admin files
+ADMIN_MEDIA_PREFIX = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/admin/"

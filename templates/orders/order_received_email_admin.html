@@ -1,79 +1,165 @@
 {% autoescape off %}
-    Hello Meng,<br> <br>
+{% load static %}
 
-    <strong>{{ order.first_name }} {{ order.last_name }} bought something from you ! </strong><br><br>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bestellbestätigung</title>
+        <style>
+            /* Ensure tables are responsive */
+            .order-table, .summary-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .order-table th, .order-table td, .summary-table td {
+                padding: 10px;
+                border-bottom: 1px solid #dddddd;
+            }
+            .order-table th {
+                border-bottom: 2px solid #dddddd;
+            }
 
-    <strong>Order Number:</strong> {{ order.order_number }}<br><br>
-
-    <p><strong>Billing Address : </strong></p>
-    <br>
-    <p>{{order.first_name}} {{order.last_name}}</p>
-    <p>{{order.address_line_1}} {{order.house_number}}</p>
-    <p>{{order.address_line_2}}</p>
-    <p>{{order.zipcode}} {{order.city}}</p>
-    <p>{{order.country}}</p>
-    <br>
-    <p><strong>Shipping Address : </strong></p>
-    <br>
-    <p>{{order.shipping_first_name}} {{order.shipping_last_name}}</p>
-    <p>{{order.shipping_address_line_1}} {{order.shipping_house_number}}</p>
-    <p>{{order.shipping_address_line_2}}</p>
-    <p>{{order.shipping_zipcode}} {{order.shipping_city}}</p>
-    <p>{{order.shipping_country}}</p>
-    <br>
-    {% if order.order_note %}
-        <p><strong>Order Note : </strong></p>
-        <p> {{order.order_note}}</p>
-        <br>
-    {% endif %}
-
-    <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 50%; margin-bottom: 20px;">
-        <thead style="background-color: #f2f2f2;">
-            <tr style="text-align: left;">
-                <th>Product</th>
-                <th style="text-align: center;">Quantity</th>
-                <th style="text-align: center;">Price</th>
+            /* Responsive address columns */
+            @media screen and (max-width: 600px) {
+                .address-column {
+                    display: block;
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+        <table align="center" width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; margin: 20px auto; padding: 20px; border: 1px solid #dddddd;">
+            <!-- Banner Section -->
+            <tr>
+                <td align="center">
+                    <img src="{% static 'images/email_banner.png' %}" alt="Danke für deine Bestellung!" style="max-width: 100%; height: auto;"/>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for item in order_product %}
-                {% if item.variations.all %}
-                    {% for i in item.variations.all %}
-                    <tr>
-                        <td>
-                            <!--<img src="{{ i.image.url }}" alt="{{ i.product.product_name }}" style="max-width: 80px; display: inline-block; vertical-align: middle;"> -->
-                            <span style="display: inline-block; vertical-align: middle; margin-left: 10px;">
-                                <a href="" style="font-weight: bold; color: #000; text-decoration: none;">{{ i.product.product_name }}</a>
-                                <br>
-                                <span style="color: #888; font-size: small;">
-                                    {{ i.variation_category|capfirst }}: {{ i.variation_value|capfirst }}
-                                </span>
-                            </span>
-                        </td>
-                        <td style="text-align: center;">{{ item.quantity }}</td>
-                        <td style="text-align: center;">{{ item.sub_total }} €</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <table border="0" cellspacing="0" cellpadding="0" style="width: 50%;">
-        <tr>
-            <td colspan="2" style="text-align: right;">Product Total:</td>
-            <td style="text-align: center;">{{ subtotal }} €</td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: right;">Shipping:</td>
-            <td style="text-align: center;">{{ order.shipping_cost }} €</td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: right; font-weight: bold;">Grand Total:</td>
-            <td style="text-align: center; font-weight: bold;">{{ order.order_total }} €</td>
-        </tr>
-    </table>
+            <!-- Content Section -->
+            <tr>
+                <td>
+                    <h2 style="color: #333333;">Bestellbestätigung</h2>
+                    <p>Hallo Meng,</p>
+                    <p>You reveived an order! 🫶</p>
 
-    <br>
+                                        <!-- Order Details Table -->
+                    <h3 style="color: #333333;">Bestellung! 😍</h3>
+                    <h4>Bestellnummer: {{order.order_number}}</h4>
+                    <table class="order-table" cellpadding="5" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th align="left">Produkte</th>
+                                <th align="left">Anzahl</th>
+                                <th align="right">Preis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order_product %}
+                            <tr>
+                                {% if item.variations.all %}
+                                    {% for i in item.variations.all %}
+                                    <td>
+                                        <img src="{{ i.image.url }}" alt="{{ item.product.name }}" style="width: 50px; height: auto; vertical-align: middle; margin-right: 10px;">
+                                        <span style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+                                                <a href="" style="font-weight: bold; color: #000; text-decoration: none;">{{ i.product.product_name }}</a>
+                                                <br>
+                                                <span style="color: #888; font-size: small;">
+                                                    {{ i.variation_category|capfirst }}: {{ i.variation_value|capfirst }}
+                                                </span>
+                                        </span>
+                                    </td>
+                                    {% endfor %}
+                                {% endif %}
+                                <td>{{ item.quantity }}</td>
+                                <td align="right">{{ item.sub_total }} €</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!-- Order Summary -->
+                    <table class="summary-table" cellpadding="5" cellspacing="0">
+                        <tr>
+                            <td>Zwischensumme:</td>
+                            <td align="right">{{ subtotal }} €</td>
+                        </tr>
+                        <tr>
+                            <td>Versandkosten:</td>
+                            <td align="right">{{ order.shipping_cost }} €</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Gesamtsumme:</td>
+                            <td align="right" style="font-weight: bold;">{{ order.order_total }} €</td>
+                        </tr>
+                    </table>
+
+                    <!-- Address Section -->
+                    <table width="100%" cellpadding="5" cellspacing="0">
+                        <tr>
+                            <td class="address-column" width="50%" valign="top">
+                                <h4>Lieferadresse:</h4>
+                                {% if order.shipping_city %}
+                                    <p>
+                                        {{ order.shipping_first_name }} {{order.shipping_last_name}}<br>
+                                        {{ order.shipping_address_line_1 }} {{order.shipping_house_number}}<br>
+                                        {% if order.shipping_address_line_2 %}
+                                            {{ order.shipping_address_line_2 }}<br>
+                                        {% endif %}
+                                        {{ order.shipping_zipcode }} {{ order.shipping_city }}<br>
+                                        {{ order.shipping_country }}<br>
+                                    </p>
+                                {% else %}
+                                    <p>
+                                        {{ order.first_name }} {{order.last_name}}<br>
+                                        {{ order.address_line_1 }} {{order.house_number}}<br>
+                                        {% if order.address_line_2 %}
+                                            {{ order.address_line_2 }}<br>
+                                        {% endif %}
+                                        {{ order.zipcode }} {{ order.city }}<br>
+                                        {{ order.country }}<br>
+                                    </p>
+                                {% endif %}
+                            </td>
+                            <td class="address-column" width="50%" valign="top">
+                                <h4>Rechnungsadresse:</h4>
+                                <p>
+                                        {{ order.first_name }} {{order.last_name}}<br>
+                                        {{ order.address_line_1 }} {{order.house_number}}<br>
+                                        {% if order.address_line_2 %}
+                                            {{ order.address_line_2 }}<br>
+                                        {% endif %}
+                                        {{ order.zipcode }} {{ order.city }}<br>
+                                        {{ order.country }}<br>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    {% if order.order_note %}
+                    <div class="address-container">
+                        <div>
+                            <h4>Nachricht:</h4>
+                            <p>{{ order.order_note }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <!-- Footer Section -->
+            <tr>
+                <td align="center" style="padding-top: 20px;">
+                    <p style="font-size: 12px; color: #888888;"></p>
+                    <p style="font-size: 12px; color: #888888;">Impressum:</p>
+                    <p style="font-size: 12px; color: #888888;">© 2024 Mengcraft • Meng Ian Kuok • Wilmerdingstr. 14 • 38118 Braunschweig • Deutschland • E-Mail: mengian.kuok@gmail.com</p>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
 
 {% endautoescape %}

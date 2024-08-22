@@ -4,7 +4,7 @@
 {% block content %}
 <!-- ========================= SECTION CONTENT ========================= -->
 
-<section class="padding-box py-5">
+<section class="padding-box">
     {% include 'includes/alerts.html' %}
     <div class="container">
         <div class="row">
@@ -12,7 +12,7 @@
             <main class="col-md-9">
                 <article class="card shadow-sm mb-4 border">
                     <header class="card-header">
-                        <strong class="d-inline-block">Logged in as: </strong>
+                        <strong class="d-inline-block">Angemeldet als: </strong>
                         <span>{{user.full_name}}</span>
                     </header>
 
@@ -21,9 +21,9 @@
                             <div class="col-md-6 mb-4">
                                 <div class="card text-center shadow-sm h-100">
                                     <div class="card-body shadow">
-                                        <h5 class="card-title">Total Orders</h5>
+                                        <h5 class="card-title">Anzahl Bestellungen</h5>
                                         <h4 class="display-3">{{orders_count}}</h4>
-                                        <a href="{% url 'my_orders' %}" class="btn btn-custom-pink mt-3">View Orders</a>
+                                        <a href="{% url 'my_orders' %}" class="btn btn-custom-pink mt-3">Meine Bestellungen</a>
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                                     <div class="card-body shadow">
                                         <img src="{{user_profile.profile_picture.url}}" alt="User Profile Picture" width="80" height="80" class="avatar mb-3 rounded-circle">
                                         <p class="mb-0">{{user.email}}</p>
-                                        <a href="{% url 'edit_profile' %}" class="btn btn-custom-pink mt-3">Edit Profile</a>
+                                        <a href="{% url 'edit_profile' %}" class="btn btn-custom-pink mt-3">Profil bearbeiten</a>
                                     </div>
                                 </div>
                             </div>

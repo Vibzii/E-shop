@@ -55,6 +55,7 @@ def product_detail(request, category_slug, product_slug):
     variations = Variation.objects.filter(product=single_product)
 
     product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
+    gallery_sorted = sorted(product_gallery, key=lambda x: x.sort_order)
     count_gallery = product_gallery.count()
 
     context = {
@@ -62,7 +63,7 @@ def product_detail(request, category_slug, product_slug):
         "in_cart": in_cart,
         'order_product': order_product,
         'reviews': reviews,
-        'product_gallery': product_gallery,
+        'product_gallery': gallery_sorted,
         'variations': variations,
         'count_gallery': count_gallery,
         'category_slug': category_slug,

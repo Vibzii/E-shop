@@ -82,7 +82,7 @@ def payment_notification(sender, **kwargs):
                         subtotal += i.product_price * i.quantity
 
                     # Send order received email to customer
-                    mail_subject = 'Thank you for your order!'
+                    mail_subject = 'Danke für deine Bestellung! 😊'
                     message = render_to_string('orders/order_received_email_user.html', {
                         'user': user.first_name,
                         'order': order,
@@ -102,7 +102,7 @@ def payment_notification(sender, **kwargs):
                         'order_product': orderproduct,
                         'subtotal': subtotal,
                     })
-                    to_email = config("EMAIL_HOST_USER")
+                    to_email = "testwebshopemail@gmail.com"
                     send_email = EmailMessage(mail_subject, message, to=[to_email])
                     send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
                     send_email.send()
@@ -164,7 +164,7 @@ def payment_notification(sender, **kwargs):
                         subtotal += i.product_price * i.quantity
 
                     # Send order received email to customer
-                    mail_subject = 'Thank you for your order!'
+                    mail_subject = 'Danke für deine Bestellung! 😊'
                     message = render_to_string('orders/order_received_email_user.html', {
                         'order': order,
                         'order_product': orderproduct,
@@ -183,7 +183,7 @@ def payment_notification(sender, **kwargs):
                         'order_product': orderproduct,
                         'subtotal': subtotal,
                     })
-                    to_email = config("EMAIL_HOST_USER")
+                    to_email = "testwebshopemail@gmail.com"
                     send_email = EmailMessage(mail_subject, message, to=[to_email])
                     send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
                     send_email.send()

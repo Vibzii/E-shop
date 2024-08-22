@@ -21,8 +21,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', include("admin_honeypot.urls", namespace='admin_honeypot')),
-    path('safe_connection/', admin.site.urls),
+    path('cat_entrance/', admin.site.urls),
     path('', views.home, name="home"),
     path('faq/', views.faq, name="faq"),
     path('data_policy/', views.data_policy, name="data_policy"),
@@ -37,5 +36,5 @@ urlpatterns = [
 
 
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 

@@ -12,28 +12,30 @@
 	<main class="col-md-9">
 		<article class="card border">
 		<header class="card-header text-center">
-			<strong class="d-inline-block mr-3">Your order history</strong>
+			<strong class="d-inline-block mr-3">Meine Bestellhistorie</strong>
 		</header>
 
 		<div class="card-body pt-2 px-0 shadow">
 			<div class="row">
 				<div class="col-md-12">
-					<table class="table table-hover mb-0 text-center">
+					<table class="table table-hover mb-0">
 					  <thead>
 						<tr>
-						  <th scope="col">Order #</th>
-						  <th scope="col">Billing Name</th>
-						  <th scope="col">Order Total</th>
-						  <th scope="col">Date</th>
+						  <th scope="col">Bestellnummer</th>
+						  <th scope="col">Produkte</th>
+						  <th scope="col">Gesamt</th>
+						  <th scope="col">Am</th>
 						</tr>
 					  </thead>
 					  <tbody>
 					  	{% for order in orders %}
 							<tr>
 							  <th scope="row"><a href="{% url 'order_detail' order.order_number %}">{{order.order_number}} </a></th>
-							  <td>{{order.full_name}}</td>
+							  <td>{{order.variation_names}}</td>
 							  <td>{{order.order_total}} €</td>
 							  <td>{{order.created_at}}</td>
+
+
 							</tr>
 					  	{% endfor %}
 					  </tbody>

@@ -4,9 +4,9 @@
 {% block content %}
 
 <!-- ========================= SECTION BANNER ========================= -->
-<section class="padding-box">
+<section class="padding-box pb-3" id="banner-homepage">
 	<div class="container">
-		<img src="{% static 'images/banners/banner.jpeg' %}" class="img-fluid banner-rounded">
+		<img src="{% static 'images/banners/banner.png' %}" class="img-fluid banner-rounded" >
 	</div>
 	</section>
 <!-- ========================= SECTION BANNER END========================= -->
@@ -14,49 +14,51 @@
 <!-- ========================= SECTION PRESENTATION  ========================= -->
 <section>
 <div class="container">
-	 <div class="px-4 py-3 my-0 text-center">
-    	<img class="d-block mx-auto mb-4" src="{% static 'images/meng_photo_small.jpg' %}" alt="mengcraft Logo" width="200" height="200">
-    	<h1 class="display-5 fw-bold text-body-emphasis">Willkommen bei Mengcraft!</h1>
-   		<div class="col-lg-6 mx-auto">
-			<p class="lead mb-4">🌼Hier bist du genau richtig, wenn du einzigartige, handgemachte, mit Liebe gehäkelte Blumen suchst!🌼 </p>
-			<p class="lead mb-4">🐝Aber in meinem Shop gibt es nicht nur gehäkelte Blümchen, sondern auch super süße Amigurumis, die jedes Geschenk nochmal das gewisse Extra geben!🐝 </p>
-			<p class="lead mb-4">💐Habt viel Spaß dabei, euren eigenen Blumenstrauß zusammenzustellen!💐</p>
-	 	</div>
-	</div>
-<!-- ========================= SECTION END ========================= -->
-<!-- ========================= SECTION PRODUCTS  ========================= -->
+    <!-- Centered Content Section -->
+    <div class="px-4 py-3 my-0 text-center">
+        <img class="d-block mx-auto mb-4" src="{% static 'images/meng_photo_small.jpg' %}" alt="mengcraft Logo" width="200" height="200">
+        <h1 class="display-5 fw-bold text-body-emphasis mb-4">Willkommen bei Mengcraft!</h1>
+        <div class="col-lg-12 mx-auto">
+            <p class="lead mb-2">🌸Hier bist du genau richtig, wenn du einzigartige, handgemachte, mit Liebe gehäkelte Blumen suchst! </p>
+            <p class="lead mb-2">🐝Aber in meinem Shop gibt es nicht nur gehäkelte Blümchen, sondern auch super süße Amigurumis, die jedes Geschenk nochmal das gewisse Extra geben! </p>
+            <p class="lead mb-2">💐Habt viel Spaß dabei, euren eigenen Blumenstrauß zusammenzustellen!</p>
+            <p class="lead mb-2">💕Viele liebe Grüße, Eure Meng</p>
+        </div>
+    </div>
 
+    <!-- Products Section -->
+    <header class="my-4">
+        <a href="{% url 'store' %}" class="btn btn-outline-pink float-end">Alle Produkte</a>
+        <h3>Neueste Produkte</h3>
+    </header>
 
-    <header>
-		<a href="{% url 'store' %}" class="btn btn-outline-pink float-end">See all products</a>
-		<h3>Latest products</h3>
-	</header>
-		<div class="row py-5">
-			{% for product in products %}
-			<div class="col-md-3">
-				<div class="card h-100">
-					<a href="{{product.get_url}}" class="img-wrap">
-						<img src="{{product.images.url}}" class="card-img-top" alt="{{product.product_name}}">
-					</a>
-					<div class="card-body text-center">
-						<a href="{{product.get_url}}" class="card-title d-block text-decoration-none">{{product.product_name}}</a>
-						<div class="price-text mt-1">from {{product.price}} EUR</div>
-						<div class="rating-star mt-2">
-							{% if product.averageReview %}
-							<span>
-								<i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
-								<i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
-								<i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
-								<i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
-								<i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
-							</span>
-							{% endif %}
-						</div>
-					</div>
-				</div>
-			</div> <!-- col.// -->
-			{% endfor %}
-		</div> <!-- row.// -->
+    <!-- Centered Product Grid -->
+    <div class="row pt-5 pb-2 justify-content-center">
+        {% for product in products %}
+        <div class="col-6 col-md-3 mb-4">
+            <div class="card h-100">
+                <a href="{{product.get_url}}" class="img-wrap">
+                    <img src="{{product.images.url}}" class="card-img-top" alt="{{product.product_name}}">
+                </a>
+                <div class="card-body text-center">
+                    <a href="{{product.get_url}}" class="card-title d-block text-decoration-none">{{product.product_name}}</a>
+                    <div class="price-text mt-1">Ab {{product.price}} €</div>
+                    <div class="rating-star mt-2">
+                        {% if product.averageReview %}
+                        <span>
+                            <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div> <!-- col.// -->
+        {% endfor %}
+    </div> <!-- row.// -->
 </div><!-- container // -->
 </section>
 <!-- ========================= SECTION PRODUCTS  ========================= -->

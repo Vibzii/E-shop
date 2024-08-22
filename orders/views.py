@@ -46,6 +46,12 @@ def payment_product(request):
         for item in cart_item.variation.all():
             total += (item.variation_price * cart_item.quantity)
             quantity += cart_item.quantity
+            gallery_image = cart_item.product.productgallery_set.filter(variation=item).first()
+            if gallery_image:
+                cart_item.gallery_image = gallery_image.image.url
+            else:
+                # Fallback to the main product image if no variation image is found
+                cart_item.gallery_image = cart_item.product.images.url
 
         if cart_item.product.shipping > max_shipping:
             max_shipping = cart_item.product.shipping
@@ -107,6 +113,12 @@ def payment_product(request):
                     item_combined = f'{item_quantity} {item_name}-{variation}'
                     item_names.append(item_combined)
             item_name_str = ', '.join(item_names)
+
+            order.items_str = item_name_str
+            order.save()
+            print(order.order_number)
+            print(order.items_str)
+
             if request.user.is_authenticated:
                 custom_value = f"{is_user}| |{current_user}"
             else:
@@ -155,6 +167,7 @@ def PaymentSuccessful(request, order_number):
         subtotal = 0
         for i in ordered_products:
             subtotal += i.product_price * i.quantity
+           
 
         context = {
             'order': order,

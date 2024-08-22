@@ -11,7 +11,7 @@
             <main class="col-md-9">
                 <article class="card border shadow">
                     <header class="card-header">
-                        <strong>Edit your profile</strong>
+                        <strong>Angemeldet mit: {{user.email}}</strong>
                     </header>
 
                     <div class="card-body">
@@ -25,66 +25,78 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="first_name" class="form-label">First Name</label>
-                                                <input type="text" name="first_name" value="{{ user_form.first_name.value }}" class="form-control">
+                                                <label for="first_name" class="form-label">Vorname</label>
+                                                <input type="text" id='first_name' name="first_name" value="{{ user_form.first_name.value }}" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="last_name" class="form-label">Last Name</label>
-                                                <input type="text" name="last_name" value="{{ user_form.last_name.value }}" class="form-control">
+                                                <label for="last_name" class="form-label">Nachname</label>
+                                                <input type="text" name="last_name" id="last_name" value="{{ user_form.last_name.value }}" class="form-control">
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="phone_number" class="form-label">Phone Number</label>
-                                                <input type="text" name="phone_number" value="{{ user_form.phone_number.value }}" class="form-control">
+                                                <label for="email" class="form-label">E-Mail</label>
+                                                <input type="text" id="email" name="email" value="{{ user_form.email.value }}" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="profile_picture" class="form-label">Profile Picture</label>
-                                                <input type="file" name="profile_picture" class="form-control">
+                                                <label for="profile_picture" class="form-label">Profilfoto</label>
+                                                <input type="file" name="profile_picture" id="profile_picture" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-8">
+                                            <div class="form-group">
+                                                <label for="address_line_1" class="form-label">Straße</label>
+                                                <input type="text" name="address_line_1" value="{{ profile_form.address_line_1.value }}" id="address_line_1" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="house_number" class="form-label">Nr.</label>
+                                                <input type="text" name="house_number" value="{{ profile_form.house_number.value }}" id="house_number" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <div class="form-group">
-                                            <label for="address_line_1" class="form-label">Address Line 1</label>
-                                            <input type="text" name="address_line_1" value="{{ profile_form.address_line_1.value }}" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="form-group">
-                                            <label for="address_line_2" class="form-label">Address Line 2</label>
+                                            <label for="address_line_2" class="form-label">Adresszusatz</label>
                                             <input type="text" id="address_line_2" name="address_line_2" value="{{ profile_form.address_line_2.value }}" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="city" class="form-label">City</label>
+                                                <label for="city" class="form-label">Stadt</label>
                                                 <input type="text" id="city" name="city" value="{{ profile_form.city.value }}" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="zipcode" class="form-label">Zipcode</label>
+                                                <label for="zipcode" class="form-label">Postleitzahl</label>
                                                 <input type="text" id="zipcode" name="zipcode" value="{{ profile_form.zipcode.value }}" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                 <label for="country" class="form-label">Country</label>
+                                                 <label for="country" class="form-label">Land</label>
 												<select id="country" name="country" class="form-control" readonly>
 													<option value="Deutschland">Deutschland</option>
 												</select>
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="submit" value="Save" class="btn btn-custom-pink">
+                                    <input type="submit" value="Speichern" class="btn btn-custom-pink">
                                 </form>
                             </div>
                         </div>

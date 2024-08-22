@@ -1,13 +1,45 @@
 {% autoescape off %}
 
-    Hi {{user.first_name}},
+    {% load static %}
 
-    Please click on the following link to confirm your registration.
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Registrierung</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+            <table align="center" width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; margin: 20px auto; padding: 20px; border: 1px solid #dddddd;">
+                <!-- Banner Section -->
+                <tr>
+                    <td align="center">
+                        <img src="{% static 'images/email_banner.png' %}" alt="Dank für deine Registrierung" style="max-width: 100%; height: auto;"/>
+                    </td>
+                </tr>
 
-    http://{{domain}}{% url 'activate' uidb64=uid token=token %}
-
-    If you think this email is not meant for you, please ignore it.
-
-
+                <!-- Content Section -->
+                <tr>
+                    <td>
+                        <p style="color: #333333;">Hallo {{user.first_name}},</p>
+                        <p>Vielen Dank für deine Registrierung in meinem Shop! 🫶</p>
+                        <p>Um die Registrierung freizuschalten, klicke bitte auf folgenden Link: https://{{domain}}{% url 'activate' uidb64=uid token=token %} 😊</p>
+                        <p>Wenn du deine Angaben nach der Freischaltung ändern möchtest, findest du alle möglichen Optionen unter „Mein Konto" in meinem <a href="https://www.mengcraft.de">Online Shop</a>.</p>
+                        <p>Solltest du eine Frage haben, dann zögere bitte nicht mich zu kontaktieren.</p>
+                        <p>Ich wünsche dir viel Spaß beim Shoppen!</p>
+                        <p>Ganz liebe und blumige Grüße,</p>
+                        <p>Meng von <a href="https://www.mengcraft.de">Mengcraft</a></p>
+                    </td>
+                </tr>
+                <!-- Footer Section -->
+                <tr>
+                    <td align="center" style="padding-top: 20px;">
+                        <p style="font-size: 12px; color: #888888;"></p>
+                        <p style="font-size: 12px; color: #888888;">Impressum:</p>
+                        <p style="font-size: 12px; color: #888888;">© 2024 Mengcraft • Meng Ian Kuok • Wilmerdingstr. 14 • 38118 Braunschweig • Deutschland • E-Mail: mengian.kuok@gmail.com</p>
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>
 
 {% endautoescape %}

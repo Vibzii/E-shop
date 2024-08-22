@@ -5,9 +5,7 @@ from .models import Contact
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.template.loader import render_to_string
-import mengcraft.settings
-
-
+from decouple import config
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -24,22 +22,24 @@ def contact(request):
                 "email": data.email,
                 "contact_note": data.contact_note,
             })
-            to_email = mengcraft.settings.EMAIL_HOST_USER
+            to_email = "testwebshopemail@gmail.com"
             send_email = EmailMessage(mail_subject_admin, message_admin, to=[to_email])
+            send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
             send_email.send()
 
             #message to user
 
-            mail_subject_user = "Thank your for your message - Mengcraft"
+            mail_subject_user = "Danke für deine Anfrage! 😊"
             message_user = render_to_string("contact/contact_form_user.html", {
                 "name": data.name,
                 "contact_note": data.contact_note
             })
             user_email = data.email
             send_email = EmailMessage(mail_subject_user, message_user, to=[user_email])
+            send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
             send_email.send()
 
-            messages.success(request, "Thank you for your message. We will be back to you shortly")
+            messages.success(request, "Danke für deine Anfrage! 😊.Ich werde mich in den nächsten Tagen diesbezüglich bei dir melden! 💐")
             return redirect('contact')
         else:
             return redirect('contact')

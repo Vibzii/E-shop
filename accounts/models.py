@@ -11,10 +11,10 @@ class MyAccountManager(BaseUserManager):
         if not username:
             raise ValueError("You must have an username")
         user = self.model(
-            email= self.normalize_email(email),
-            username= username,
-            first_name = first_name,
-            last_name = last_name,
+            email=self.normalize_email(email),
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
         )
 
         user.set_password(password)
@@ -43,7 +43,6 @@ class Account(AbstractBaseUser):
     last_name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=50, blank=True)
 
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
@@ -74,6 +73,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     address_line_1 = models.CharField(blank=True, max_length=100)
+    house_number = models.CharField(blank=True, max_length=10)
     address_line_2 = models.CharField(blank=True, max_length=100)
     profile_picture = models.ImageField(blank=True, upload_to="userprofile")
     city = models.CharField(blank=True, max_length=20)

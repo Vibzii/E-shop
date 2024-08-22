@@ -1,10 +1,42 @@
 {% autoescape off %}
 
-    Hello {{name}},
+    {% load static %}
 
-    Thank you for your message.
-    I will be back to you shortly !
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Contact Mail</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+            <table align="center" width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; margin: 20px auto; padding: 20px; border: 1px solid #dddddd;">
+                <!-- Banner Section -->
+                <tr>
+                    <td align="center">
+                        <img src="{% static 'images/email_banner.png' %}" alt="mengcraft banner" style="max-width: 100%; height: auto;"/>
+                    </td>
+                </tr>
 
-    Meng !
+                <!-- Content Section -->
+                <tr>
+                    <td>
+                        <p style="color: #333333;">Hallo {{name}},</p>
+                        <p>Vielen Dank für dein Interesse und deine Anfrage! 😊</p>
+                        <p>Ich werde mich in den nächsten Tagen diesbezüglich bei dir melden! 💐</p>
+                        <p>Ganz liebe und blumige Grüße,</p>
+                        <p>Meng von <a href="https://www.mengcraft.de">Mengcraft</a></p>
+                    </td>
+                </tr>
+                <!-- Footer Section -->
+                <tr>
+                    <td align="center" style="padding-top: 20px;">
+                        <p style="font-size: 12px; color: #888888;"></p>
+                        <p style="font-size: 12px; color: #888888;">Impressum:</p>
+                        <p style="font-size: 12px; color: #888888;">© 2024 Mengcraft • Meng Ian Kuok • Wilmerdingstr. 14 • 38118 Braunschweig • Deutschland • E-Mail: mengian.kuok@gmail.com</p>
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>
 
 {% endautoescape %}
