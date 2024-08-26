@@ -178,7 +178,7 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 PAYPAL_RECEIVER_EMAIL = config("PAYPAL_RECEIVER_EMAIL")
 PAYPAL_TEST = True  # Set to False for production
 
-CSRF_TRUSTED_ORIGINS = ['http://webshop-project-dev.us-east-1.elasticbeanstalk.com/']
+CSRF_TRUSTED_ORIGINS = ['https://ec2-44-220-159-139.compute-1.amazonaws.com/']
 
 
 PAYPAL_BUY_BUTTON_IMAGE = config('PAYPAL_BUTTON_IMAGE')

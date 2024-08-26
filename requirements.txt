@@ -23,12 +23,10 @@ pathspec==0.10.1
 pillow==10.4.0
 platformdirs==4.2.2
 psycopg2-binary==2.9.9
-pypiwin32==223
 python-dateutil==2.9.0.post0
 python-decouple==3.4
 python-ipware==3.0.0
 pytz==2024.1
-pywin32==306
 PyYAML==6.0.2
 requests==2.32.3
 s3transfer==0.7.0
