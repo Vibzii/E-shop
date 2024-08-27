@@ -181,7 +181,6 @@ PAYPAL_TEST = True  # Set to False for production
 CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de']
 
 
-PAYPAL_BUY_BUTTON_IMAGE = "/static/images/jetzt_bezahlen.png"
 
 #if not PAYPAL_BUY_BUTTON_IMAGE:
 #    raise ImproperConfiguration("PAYPAL_BUTTON_IMAGE environment variable not set")
@@ -213,3 +212,5 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Ensure this is also set correctly for admin files
 ADMIN_MEDIA_PREFIX = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/admin/"
+
+PAYPAL_BUY_BUTTON_IMAGE = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/images/jetzt_bezahlen.png"
