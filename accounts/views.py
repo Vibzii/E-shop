@@ -17,6 +17,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 import requests
 import logging
+from mengcraft import settings
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ def register(request):
             # Create User Profile
             profile = UserProfile()
             profile.user_id = user.id
-            profile.profile_picture = 'default/default-user.png'
+            profile.profile_picture = 'media/default/default-user.png'
             profile.save()
 
             # USER ACTIVATION

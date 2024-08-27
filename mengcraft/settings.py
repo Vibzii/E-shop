@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["mengcraft.de", "www.mengcraft.de", "*"]
 
 
 # Application definition
@@ -178,10 +178,10 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 PAYPAL_RECEIVER_EMAIL = config("PAYPAL_RECEIVER_EMAIL")
 PAYPAL_TEST = True  # Set to False for production
 
-CSRF_TRUSTED_ORIGINS = ['https://ec2-44-220-159-139.compute-1.amazonaws.com/']
+CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de']
 
 
-PAYPAL_BUY_BUTTON_IMAGE = config('PAYPAL_BUTTON_IMAGE')
+PAYPAL_BUY_BUTTON_IMAGE = "/static/images/jetzt_bezahlen.png"
 
 #if not PAYPAL_BUY_BUTTON_IMAGE:
 #    raise ImproperConfiguration("PAYPAL_BUTTON_IMAGE environment variable not set")
