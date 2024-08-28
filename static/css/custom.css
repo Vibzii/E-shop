@@ -188,6 +188,8 @@ label:hover ~ input:checked ~ label{
 
     /* Custom style for all accordion buttons */
     .accordion-button {
+      background-color: #f2edeb !important; /* Set the background color to grey */
+      color: #93613f;
       border-radius: 10px; /* Apply rounded corners to all accordion buttons */
     }
 
@@ -792,7 +794,26 @@ ul.nav li {
 }
 
 .alert-success{
-    background-color: #ffdbdb;
+    background-color: #fbd6cd;
+    color: #93613f;
+    border: none;
 }
 
+@media (max-width: 768px) {  /* Change the breakpoint as needed */
+  .toggle-dropdown {
+    display: none;
+  }
+}
 
+@media (max-width: 768px) {  /* Change the breakpoint as needed */
+  .dropdown-content {
+    display: none !important;
+  }
+}
+
+/* Hide the divider on screens smaller than 768px */
+@media (max-width: 767.98px) {
+    .divider {
+        display: none;
+    }
+}

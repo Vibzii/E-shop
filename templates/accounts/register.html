@@ -32,13 +32,23 @@
 			<div class="row">
 				<div class="col-md-6 mb-3">
 					<label for="password" class="form-label">Passwort</label>
-					<input type="password" name="password" placeholder="Passwort" class="form-control" id="id_password">
+					<div class="input-group">
+						<input type="password" name="password" placeholder="Passwort" class="form-control" id="id_password">
+						<span class="input-group-text">
+							<i class="fa-solid fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+						</span>
+					</div>
 				</div>
 				<div class="col-md-6 mb-3">
 					<label for="confirm_password" class="form-label">Passwort bestätigen</label>
-					<input type="password" name="confirm_password" placeholder="Passwort bestätigen" class="form-control" id="id_confirm_password">
+					<div class="input-group">
+						<input type="password" name="confirm_password" placeholder="Passwort bestätigen" class="form-control" id="id_confirm_password">
+						<span class="input-group-text">
+							<i class="fa-solid fa-eye" id="toggleConfirmPassword" style="cursor: pointer;"></i>
+						</span>
+					</div>
 				</div>
-			</div>
+        </div>
 			<br>
 			<div class="d-grid">
 				<button type="submit" class="btn btn-custom-pink">Registrieren</button>
@@ -50,6 +60,33 @@
 	</div>
 	<p class="text-center mt-4">Du hast bereits ein Konto? <a href="{% url 'login' %}" class="custom-link">Login</a></p>
 </section>
+<script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#id_password');
+
+        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+        const confirmPassword = document.querySelector('#id_confirm_password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute for the password field
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Toggle the eye icon for the password field
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        toggleConfirmPassword.addEventListener('click', function () {
+            // Toggle the type attribute for the confirm password field
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+
+            // Toggle the eye icon for the confirm password field
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 <!-- ========================= Register ========================= -->
 
 {% endblock %}

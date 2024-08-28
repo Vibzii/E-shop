@@ -7,10 +7,12 @@
 
     {% if request.GET.command == 'verification' %}
     <div class="container mx-auto alert  text-center" role="alert" style="background-color: #f8d7da; max-width: 1024px; margin-top:100px;">
+        <br>
         Danke für deine Registrierung! 🌸 <br>Wir haben dir einen Aktivierungslink an folgende E-Mail Adresse geschickt: {{request.GET.email}}
-        <br><br>
-        Schon bereits aktiviert? <a class="custom-link" href="{% url 'login' %}">Login</a>
+        <br>
+        <br>
     </div>
+    <p class="text-center">Schon bereits aktiviert? <a class="custom-link" href="{% url 'login' %}">Login</a></p>
 
     {% else %}
 
@@ -26,7 +28,12 @@
 			 <input type="email" class="form-control" placeholder="E-Mail" name="email" >
           </div> <!-- form-group// -->
           <div class="mb-3">
-			<input type="password" class="form-control" placeholder="Passwort" name="password" >
+              <div class="input-group">
+                <input type="password" class="form-control" placeholder="Passwort" id="password" name="password">
+                <span class="input-group-text">
+                        <i class="fa-solid fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                </span>
+              </div>
           </div> <!-- form-group// -->
 
           <div class="mb-3 text-end">
@@ -46,6 +53,19 @@
     {% endif %}
 
 </section>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
 
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 
 {% endblock %}

@@ -123,6 +123,9 @@ def payment_product(request):
                 custom_value = f"{is_user}| |{current_user}"
             else:
                 custom_value = f"{is_user}|{_cart_id(request)}|{data.email}"
+
+            print(f"https://{host}{reverse('paypal-ipn')}")
+
             paypal_checkout = {
                 'business': settings.PAYPAL_RECEIVER_EMAIL,
                 'custom': custom_value,

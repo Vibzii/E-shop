@@ -17,18 +17,21 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 @receiver(valid_ipn_received)
 def payment_notification(sender, **kwargs):
-
+    print("1")
     ipn_obj = sender
     # Ensure the payment_status is completed
     if ipn_obj.payment_status == ST_PP_COMPLETED:
+        print("2")
         try:
             # Extract necessary IPN data
             transaction_id = ipn_obj.txn_id
+            print("3")
             order_number = ipn_obj.item_number
             status = ipn_obj.payment_status
             current_user = str(ipn_obj.custom)
             user = current_user.split("|")
             if user[0] == "True":
+
                 user = Account.objects.get(email=user[2])
                 order = Order.objects.get(user=user, is_ordered=False, order_number=order_number)
                 if order:

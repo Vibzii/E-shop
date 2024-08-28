@@ -22,7 +22,7 @@
     <div class="container justify-content-center text-center">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/store/' %}active{% endif %}" aria-current="page" href="{% url 'store' %}">Alle Produkte |</a>
+          <a class="nav-link {% if request.path == '/store/' %}active{% endif %}" aria-current="page" href="{% url 'store' %}">Alle Produkte <span class="divider">|</span></a>
         </li>
         {% for category in links %}
         <li class="nav-item">

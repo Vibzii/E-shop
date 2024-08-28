@@ -16,10 +16,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 import requests
-import logging
-from mengcraft import settings
 
-logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == "POST":
@@ -149,7 +146,6 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        logger.info(f"File being saved to: {settings.default_storage}")
         messages.success(request, "Dein Profil ist aktiviert.")
         return redirect("login")
 
@@ -251,7 +247,6 @@ def edit_profile(request):
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
         if user_form.is_valid() and profile_form.is_valid():
-            logger.info(f"File being saved to: {default_storage}")
             user_form.save()
             profile_form.save()
             messages.success(request, "Dein Profil wurde aktualisiert.")
@@ -282,7 +277,7 @@ def change_password(request):
                 user.save()
 
                 messages.success(request, "Dein Passwort wurde erfolgreich geändert.")
-                return redirect("change_password")
+                return redirect("login")
             else:
                 messages.error(request, "Dein aktuelles Passwort ist nicht korrekt.")
                 return redirect("change_password")

@@ -22,7 +22,7 @@
                     <td>
                         <p style="color: #333333;">Hallo {{user.first_name}},</p>
                         <p>Vielen Dank für deine Registrierung in meinem Shop! 🫶</p>
-                        <p>Um die Registrierung freizuschalten, klicke bitte auf folgenden Link: https://{{domain}}{% url 'activate' uidb64=uid token=token %} 😊</p>
+                        <p>Um die Registrierung freizuschalten, klicke bitte auf folgenden Link: <a href="https://{{domain}}{% url 'activate' uidb64=uid token=token %}" style="color: #1a73e8; text-decoration: underline;">https://{{domain}}{% url 'activate' uidb64=uid token=token %}</a> 😊</p>
                         <p>Wenn du deine Angaben nach der Freischaltung ändern möchtest, findest du alle möglichen Optionen unter „Mein Konto" in meinem <a href="https://www.mengcraft.de">Online Shop</a>.</p>
                         <p>Solltest du eine Frage haben, dann zögere bitte nicht mich zu kontaktieren.</p>
                         <p>Ich wünsche dir viel Spaß beim Shoppen!</p>
