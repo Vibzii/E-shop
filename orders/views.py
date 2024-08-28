@@ -135,8 +135,8 @@ def payment_product(request):
                 'currency_code': 'EUR',
                 "item_number": order_number,
                 'notify_url': f"https://{host}{reverse('paypal-ipn')}",
-                'return_url': f"http://{host}{reverse('payment-success', kwargs={'order_number': order_number})}",
-                'cancel_url': f"http://{host}{reverse('payment-failed')}",
+                'return_url': f"https://{host}{reverse('payment-success', kwargs={'order_number': order_number})}",
+                'cancel_url': f"https://{host}{reverse('payment-failed')}",
             }
 
             paypal_payment = PayPalPaymentsForm(initial=paypal_checkout)
