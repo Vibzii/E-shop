@@ -1,55 +1,48 @@
-/* Hide radio button */
-
-.rate > input{
-    display: none;
-    }
-
-.rate{
-    display: inline-block;
-    border: 0;
+/* Hide Radio button */
+.rate > input {
+  display: none;
 }
 
-.rate > label{
-    float: right;
+.rate {
+  display: inline-block;
+  border: 0;
 }
 
-/* show the stars */
-
-.rate > label:before{
-    display: inline-block;
-    font-size: 1.1rem;
-    font-family: FontAwesome;
-    content: "\f005";
-    margin: 0;
-    padding: 0.3rem 0.2rem;
-    cursor: pointer;
-
+.rate > label {
+  float: right;
+  font-size: 1.1rem;
+  margin: 0 2px;
+  color: #ccc; /* Default color for unselected stars */
+  cursor: pointer;
 }
 
-.rate .half:before{
-    content:"\f089";
-    position: absolute;
-    padding-right: 0;
+/* Showing the stars */
+.rate > label:before {
+  content: "\f005";
+  font-family: FontAwesome;
 }
 
-
-/* click and hover */
-
-input:checked ~ label, label:hover ~ label{
-    color: #93613f;
+/* Hover effect on stars */
+.rate > label:hover,
+.rate > label:hover ~ label {
+  color: #ffb503;
 }
 
-/* hover Highlight */
+/* Checked stars */
+input:checked ~ label {
+  color: #ffb503;
+}
 
+/* Hover effect with checked stars */
 input:checked + label:hover,
 input:checked ~ label:hover,
 input:checked ~ label:hover ~ label,
-label:hover ~ input:checked ~ label{
-    color: #cc9000;
+label:hover ~ input:checked ~ label {
+  color: #cc9000;
 }
 
-.rating-star i{
-    color: #ffb503 !important;
+.rating-star i {
+  color: #ffb503 !important;
 }
 
 /* bootstrap footer*/
@@ -816,4 +809,24 @@ ul.nav li {
     .divider {
         display: none;
     }
+}
+
+.profile-picture-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+}
+
+.profile-picture {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
