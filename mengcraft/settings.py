@@ -178,7 +178,7 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 PAYPAL_RECEIVER_EMAIL = config("PAYPAL_RECEIVER_EMAIL")
 PAYPAL_TEST = True  # Set to False for production
 
-CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de']
+CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de',  'https://2ec0-93-208-211-238.ngrok-free.app']
 
 
 

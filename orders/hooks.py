@@ -11,6 +11,7 @@ from paypal.standard.ipn.signals import valid_ipn_received
 from .models import Order, Payment, OrderProduct
 from carts.models import CartItem, Cart
 from decouple import config
+
 logger = logging.getLogger(__name__)
 
 
@@ -105,7 +106,7 @@ def payment_notification(sender, **kwargs):
                         'order_product': orderproduct,
                         'subtotal': subtotal,
                     })
-                    to_email = "testwebshopemail@gmail.com"
+                    to_email = config("EMAIL_HOST_USER")
                     send_email = EmailMessage(mail_subject, message, to=[to_email])
                     send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
                     send_email.send()
@@ -186,7 +187,7 @@ def payment_notification(sender, **kwargs):
                         'order_product': orderproduct,
                         'subtotal': subtotal,
                     })
-                    to_email = "testwebshopemail@gmail.com"
+                    to_email = config("EMAIL_HOST_USER")
                     send_email = EmailMessage(mail_subject, message, to=[to_email])
                     send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
                     send_email.send()

@@ -22,7 +22,7 @@ def contact(request):
                 "email": data.email,
                 "contact_note": data.contact_note,
             })
-            to_email = "testwebshopemail@gmail.com"
+            to_email = config("EMAIL_HOST_USER")
             send_email = EmailMessage(mail_subject_admin, message_admin, to=[to_email])
             send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
             send_email.send()
