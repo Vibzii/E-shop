@@ -178,7 +178,7 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 PAYPAL_RECEIVER_EMAIL = config("PAYPAL_RECEIVER_EMAIL")
 PAYPAL_TEST = True  # Set to False for production
 
-CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de',  'https://2ec0-93-208-211-238.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de']
 
 
 
@@ -187,7 +187,7 @@ CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de',  'ht
 
 SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-SESSION_TIMEOUT_REDIRECT = '/accounts/login'
+SESSION_TIMEOUT_REDIRECT = '/'
 
 
 # AWS Credentials and Bucket Information
@@ -199,6 +199,10 @@ AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 # S3 Custom Domain (optional but recommended)
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+# Limits
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
 
 # Media settings
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
