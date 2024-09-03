@@ -246,7 +246,7 @@
                                 </label>
                             </div>
 
-                            <button type="submit" class="btn btn-custom-pink w-100" name="submit" id="place-order-button" disabled><i class="fa-regular fa-circle-right fa-lg"></i> Weiter zur Kasse</button>
+                            <button type="submit" class="btn btn-custom-pink w-100" name="submit" id="place-order-button"><i class="fa-regular fa-circle-right fa-lg"></i> Weiter zur Kasse</button>
                             <a href="{% url 'store' %}" class="btn btn-light w-100 mt-2"><i class="fa-solid fa-circle-left fa-lg"></i> Weiter einkaufen</a>
                         </form>
                     </div>
@@ -256,11 +256,7 @@
     </div> <!-- container .//  -->
 </section>
 <script>
-    // JavaScript to enable the button when the checkbox is checked
-    document.getElementById('agree-to-policy').addEventListener('change', function() {
-        var placeOrderButton = document.getElementById('place-order-button');
-        placeOrderButton.disabled = !this.checked;
-    });
+
 
     document.getElementById('same-address').addEventListener('change', function() {
         var shippingFields = document.getElementById('shipping-address-fields');

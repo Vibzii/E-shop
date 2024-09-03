@@ -39,7 +39,7 @@ def contact(request):
             send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
             send_email.send()
 
-            messages.success(request, "Danke für deine Anfrage! 😊.Ich werde mich in den nächsten Tagen diesbezüglich bei dir melden! 💐")
+            messages.success(request, "Danke für deine Anfrage! 😊 Ich werde mich in den nächsten Tagen diesbezüglich bei dir melden! 💐")
             return redirect('contact')
         else:
             return redirect('contact')

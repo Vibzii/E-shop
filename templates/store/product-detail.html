@@ -160,7 +160,7 @@
 									{% csrf_token %}
 											<h5>Bewertung schreiben</h5>
 											<div>
-												<label>Wie findest du das Produkt? </label>
+												<label>Wie findest du das Produkt?*</label>
 												<br>
 												<div class="rate">
 													<input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10" title='5'></label>
@@ -176,9 +176,11 @@
 												Bewertung:
 												<textarea name="review" rows="4" class="form-control"></textarea>
 												<br>
-												<input type="submit" value="Senden" class="btn btn-custom-pink">
-
-
+												{% if user_reviewed %}
+													<input type="submit" value="Aktualisieren" class="btn btn-custom-pink">
+												{% else %}
+													<input type="submit" value="Senden" class="btn btn-custom-pink">
+												{% endif %}
 									</div>
 								</form>
 							</div>
@@ -203,9 +205,7 @@
 						<article class="box mb-3 p-3 shadow-sm rounded border">
 							<div class="d-flex justify-content-between align-items-center w-100 mb-2">
 								<div class="d-flex align-items-center">
-									<!-- Profile Image -->
-									<img src="{{  review.user.userprofile.profile_picture.url }}" alt="Profile Image" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
-
+								
 									<!-- User's Full Name and Rating -->
 									<div>
 										<h6 class="mb-0 fw-bold">{{ review.user.full_name }}</h6>
