@@ -53,7 +53,12 @@ def product_detail(request, category_slug, product_slug):
 
     reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
     variations = Variation.objects.filter(product=single_product)
-    user_reviewed = ReviewRating.objects.filter(product=single_product, user=request.user).exists()
+    if request.user.is_authenticated:
+        user_reviewed = ReviewRating.objects.filter(product=single_product, user=request.user).exists()
+    else:
+        user_reviewed = False
+
+
 
     product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
     gallery_sorted = sorted(product_gallery, key=lambda x: x.sort_order)
