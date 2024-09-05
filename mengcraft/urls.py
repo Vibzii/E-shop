@@ -20,6 +20,7 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 
+
 urlpatterns = [
     path('cat_entrance/', admin.site.urls),
     path('', views.home, name="home"),
@@ -30,11 +31,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('orders/', include('orders.urls')),
     path('contact/', include('contact.urls')),
-
-
-
-
-
-
 ]
 

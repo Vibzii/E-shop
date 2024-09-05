@@ -43,6 +43,9 @@
                 <div class="card-body text-center">
                     <a href="{{product.get_url}}" class="card-title d-block text-decoration-none">{{product.product_name}}</a>
                     <div class="price-text mt-1">Ab {{product.price}} €</div>
+                    <div class="mt-2">
+                        <a href="{{product.get_url}}" class="btn btn-block btn-custom-pink">Details </a>
+                    </div>
                     <div class="rating-star mt-2">
                         {% if product.averageReview %}
                         <span>

@@ -830,3 +830,22 @@ ul.nav li {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.custom-select {
+    width: auto;
+    padding: 5px 20px;
+    border-radius: 25px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.custom-select:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.custom-select:focus {
+    border-color: #80bdff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+}

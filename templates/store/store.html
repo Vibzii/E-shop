@@ -10,9 +10,9 @@
   <div class="px-4 py my-4 text-center">
 
 	{% if 'search' in request.path %}
-    	<h1 class="display-5 fw-bold text-body-emphasis">Häkelbude</h1>
+    	<h1 class="display-5 fw-bold text-body-emphasis">Häkelbüdchen</h1>
 	{% else %}
-		<h1 class="display-5 fw-bold text-body-emphasis">Häkelbude</h1>
+		<h1 class="display-5 fw-bold text-body-emphasis">Häkelbüdchen</h1>
 	{% endif %}
   </div>
 
@@ -52,9 +52,21 @@
 <div class="container">
 
 <header class="border-bottom mb-4 pb-3">
-		<div class="form-inline">
-			<span class="mr-md-auto">{{product_count}} Ergebnisse </span>
-		</div>
+    <!-- Use d-flex to align the span and select on the same line -->
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Span aligned to the left -->
+        <span>{{product_count}} Ergebnisse</span>
+
+        <!-- Sort select aligned to the right -->
+        <div class="d-flex align-items-center">
+            <label for="sort-select" class="mr-2 mb-0">Sortieren nach:</label>
+            <select id="sort-select" class="custom-select custom-select-sm px-2 mx-2" onchange="sortProducts()">
+                <option value="?sort=created_date&order=desc" {% if not current_sort or current_sort == 'created_date' %}selected{% endif %}>Nach Aktualität</option>
+                <option value="?sort=price&order=asc" {% if current_sort == 'price' and current_order == 'asc' %}selected{% endif %}>Preis aufsteigend</option>
+                <option value="?sort=price&order=desc" {% if current_sort == 'price' and current_order == 'desc' %}selected{% endif %}>Preis absteigend</option>
+            </select>
+        </div>
+    </div>
 </header>
 		<div class="row py-3">
 			{% if products %}
@@ -125,5 +137,12 @@
 
 </div> <!-- container .//  -->
 </section>
+<script>
+    function sortProducts() {
+        var sortSelect = document.getElementById("sort-select");
+        var selectedValue = sortSelect.options[sortSelect.selectedIndex].value;
+        window.location.href = selectedValue;
+    }
+</script>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock %}
