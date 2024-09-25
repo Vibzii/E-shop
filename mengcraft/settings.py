@@ -176,7 +176,7 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 #Paypal Settings
 
 PAYPAL_RECEIVER_EMAIL = config("PAYPAL_RECEIVER_EMAIL")
-PAYPAL_TEST = True  # Set to False for production
+PAYPAL_TEST = config("PAYPAL_TEST", cast=bool)  # Set to False for production
 
 CSRF_TRUSTED_ORIGINS = ['https://mengcraft.de', 'https://www.mengcraft.de']
 
