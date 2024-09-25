@@ -93,7 +93,7 @@ def payment_notification(sender, **kwargs):
                         'order_product': orderproduct,
                         'subtotal': subtotal,
                     })
-                    to_email = user.email
+                    to_email = order.email
                     send_email = EmailMessage(mail_subject, message, to=[to_email])
                     send_email.content_subtype = "html"  # Ensure the email content is rendered as HTML
                     send_email.send()
