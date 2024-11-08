@@ -34,3 +34,7 @@ def faq(request):
 def data_policy(request):
 
     return render(request, "data_policy.html")
+
+
+def impressum(request):
+    return render(request, "impressum.html")

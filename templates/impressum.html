@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ========================= SECTION MAIN ========================= -->
+{% include 'includes/alerts.html' %}
+
+  <div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 shadow-lg">
+      <div class="col-lg-8 p-3 p-lg-5 pt-lg-3">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Impressum</h1>
+        <br>
+        <p class="lead"><b>Angaben gemäß § 5 TMG</b><br>
+        Mengcraft<br>
+        Meng Ian Kuok<br>
+        Wilmerdingstr. 14<br>
+        38118 Braunschweig<br>
+        Deutschland<br>
+        <br>
+        <b>Kontakt</b><br>
+        E-Mail: mengian.kuok@gmail.com<br>
+        Internet: www.mengcraft.de<br>
+        <br>
+        <b>Redaktionell verantwortlich</b><br>
+        Meng Ian Kuok<br>
+        Wilmerdingstr. 14<br>
+        38118 Braunschweig<br>
+        Deutschland<br>
+        <br>
+        <b>EU-Streitschlichtung</b><br>
+        Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br>
+        https://ec.europa.eu/consumers/odr/<br>
+        <br>
+        <b>Verbraucherstreitbeilegung / Universalschlichtungsstelle</b><br>
+        Wir sind nicht verpflichtet oder bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.<br>
+        <br>
+        <b>Urheberrechtshinweis</b><br>
+        Alle Inhalte dieser Website sind urheberrechtlich geschützt. Das Urheberrecht liegt, soweit nicht ausdrücklich anders gekennzeichnet, bei dem Betreiber der Website.</p><br>
+      </div>
+      <div class="col-lg-3 offset-lg-1 p-0 overflow-hidden">
+          <img class="rounded-lg-3" src="{% static 'images\meng_mail_3.png' %}" alt="Logo Mengcraft" width="500">
+      </div>
+    </div>
+  </div>
+
+<!-- ========================= SECTION  END// ========================= -->
+
+
+{% endblock %}

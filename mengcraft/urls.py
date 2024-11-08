@@ -25,6 +25,7 @@ urlpatterns = [
     path('cat_entrance/', admin.site.urls),
     path('', views.home, name="home"),
     path('faq/', views.faq, name="faq"),
+    path('impressum/', views.impressum, name="impressum"),
     path('data_policy/', views.data_policy, name="data_policy"),
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
