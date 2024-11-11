@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengcraft Links</title>
+    <script src="https://kit.fontawesome.com/b2ab0f8859.js" crossorigin="anonymous"></script>
+    <style>
+        /* Social icons styling */
+
+        .social-icons {
+            display: flex;
+            justify-content: center; /* Center the icons */
+            list-style: none; /* Remove default list styling */
+            padding: 0;
+            margin-bottom: 15px; /* Space between icons and the bio text */
+        }
+
+        .social-icons li {
+            margin: 0 10px; /* Space between each icon */
+        }
+
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px; /* Set the width of the circle */
+            height: 50px; /* Set the height of the circle */
+            border: 3px solid #93613f; /* Circle border color */
+            border-radius: 50%; /* Make the border circular */
+            background-color: #fff; /* Background color of the circle */
+            color: #007bff; /* Icon color */
+            text-decoration: none; /* Remove underline */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
+        }
+
+        .social-icons a:hover {
+            background-color: #f2edeb; /* Change background color on hover */
+            color: ##93613f; /* Change icon color on hover */
+        }
+
+        .social-icons i {
+            font-size: 24px; /* Adjust the size of the icons */
+        }
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            color: #93613f;
+
+        }
+
+        /* Set the background image for the entire page */
+        body {
+            background-image: url({% static 'images/links-bg-small.png' %}); /* Replace with your image URL */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center center; /* Center the image */
+            background-attachment: fixed; /* Optional: keep the background fixed during scrolling */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            color: #333; /* Text color */
+            min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
+            display: flex; /* Use flexbox to center content vertically and horizontally */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+
+        /* Container for all content */
+        .container {
+            width: 90%; /* Make the container responsive */
+            max-width: 600px; /* Maximum width of the container */
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.8); /* Light background for text readability */
+            border-radius: 10px;
+        }
+
+        /* Profile image */
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto;
+            border: 4px solid white;
+        }
+
+        /* Bio section */
+        .bio {
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        /* Link button styles */
+        .link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            border: 2px solid #93613f;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #f2edeb; /* White button */
+            color: #93613f;
+            text-decoration: none;
+            font-size: 1.1em;
+            border-radius: 25px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Logo within each button */
+        .link img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+        }
+
+        /* Hover effect for link buttons */
+        .link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+            section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<section>
+    <div class="container">
+        <!-- Bio section -->
+        <p><b style="font-size:50px;">Mengcraft</b><br><br>Folgt mir gerne auf meinen Kanälen und viel Spaß beim Stöbern und Shoppen! 💕</p><br>
+         <ul class="social-icons">
+            <li><a href="https://www.youtube.com/channel/UCIcZRkUOih9rh1fj0zYPSmQ"><i class="fab fa-youtube fa-2xl"></i></a></li>
+            <li><a href="https://www.instagram.com/mengcraft.crochet/"><i class="fab fa-instagram fa-2xl"></i></a></li>
+            <li><a href="https://www.tiktok.com/@mengcraft.crochet"><i class="fab fa-tiktok fa-2xl"></i></a></li>
+         </ul>
+        <!-- Links with logo option -->
+        <a href="{% url 'store' %}" class="link">
+            <i class="fa-solid fa-shop fa-lg shadow"></i>&nbsp; Mein eigener Onlineshop
+        </a>
+        <a href="https://www.etsy.com/shop/mengcraftcrochet/?etsrc=sdt" class="link">
+            <i class="fa-brands fa-etsy fa-lg"></i>&nbsp; Mein Etsy Shop
+        </a>
+        <a href="https://ko-fi.com/mengcraft" class="link">
+            <i class="fa-solid fa-mug-hot fa-lg"></i>&nbsp; Kickstarte mich etwas?
+        </a>
+        <a href="https://www.amazon.de/hz/wishlist/ls/2Z7JMNP54NCRL?ref_=wl_share" class="link">
+            <i class="fa-brands fa-amazon fa-lg"></i>&nbsp; Wünsch mir was!
+        </a>
+    </div>
+</section>
+</body>
+</html>

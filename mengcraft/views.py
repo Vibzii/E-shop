@@ -38,3 +38,7 @@ def data_policy(request):
 
 def impressum(request):
     return render(request, "impressum.html")
+
+def links(request):
+    return render(request, "links.html")
+
