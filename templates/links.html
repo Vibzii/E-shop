@@ -67,6 +67,11 @@
             align-items: center;
             flex-direction: column;
         }
+        @media (max-width: 768px) {
+            body {
+            background-image: url({% static 'images/1.png' %}); /* Replace with your image URL */
+                }
+        }
 
 
         /* Container for all content */
@@ -142,9 +147,9 @@
         <!-- Bio section -->
         <p><b style="font-size:50px;">Mengcraft</b><br><br>Folgt mir gerne auf meinen Kanälen und viel Spaß beim Stöbern und Shoppen! 💕</p><br>
          <ul class="social-icons">
+            <li><a href="https://www.tiktok.com/@mengcraft.crochet"><i class="fab fa-tiktok fa-2xl"></i></a></li>
             <li><a href="https://www.youtube.com/channel/UCIcZRkUOih9rh1fj0zYPSmQ"><i class="fab fa-youtube fa-2xl"></i></a></li>
             <li><a href="https://www.instagram.com/mengcraft.crochet/"><i class="fab fa-instagram fa-2xl"></i></a></li>
-            <li><a href="https://www.tiktok.com/@mengcraft.crochet"><i class="fab fa-tiktok fa-2xl"></i></a></li>
          </ul>
         <!-- Links with logo option -->
         <a href="{% url 'store' %}" class="link">
@@ -159,7 +164,11 @@
         <a href="https://www.amazon.de/hz/wishlist/ls/2Z7JMNP54NCRL?ref_=wl_share" class="link">
             <i class="fa-brands fa-amazon fa-lg"></i>&nbsp; Wünsch mir was!
         </a>
+        <div class="d-flex flex-column flex-sm-row justify-content-between pt-4 mt-4 border-top">
+          <p>&copy; 2024 Mengcraft & Vincent Verdonck</p>
+        </div>
     </div>
 </section>
+
 </body>
 </html>
