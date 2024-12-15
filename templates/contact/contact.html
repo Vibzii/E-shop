@@ -21,18 +21,47 @@ Bei Fragen, Anmerkungen oder Problemen, die du durch meine „FAQ” - Seite nic
         <div class="container">
           <form action="{% url 'contact' %}" method="POST" class="row g-3">
             {% csrf_token %}
-              <div class="col-12">
-                <label for="name" class="form-label">Name*</label>
-                <input type="text" class="form-control" id="name" placeholder="" name="name" required>
-              </div>
-              <div class="col-md-12">
-                <label for="inputEmail4" class="form-label">E-Mail*</label>
-                <input type="email" class="form-control" id="inputEmail4" name="email" required>
-              </div>
-              <div class="col-12">
-                <label for="request" class="form-label">Nachricht*</label>
-                <textarea class="form-control" id="request" rows="4" name="contact_note" required></textarea>
-              </div>
+                  <div class="col-12">
+                    <label for="name" class="form-label">Name*</label>
+                    <input type="text" class="form-control" id="name"
+                           name="name"
+                           value="{{ form.name.value|default:'' }}"
+                           required>
+                    {% if form.name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-12">
+                    <label for="inputEmail4" class="form-label">E-Mail*</label>
+                    <input type="email" class="form-control" id="inputEmail4"
+                           name="email"
+                           value="{{ form.email.value|default:'' }}"
+                           required>
+                    {% if form.email.errors %}
+                        <div class="text-danger">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-12">
+                    <label for="request" class="form-label">Nachricht*</label>
+                    <textarea class="form-control" id="request" rows="4"
+                              name="contact_note"
+                              required>{{ form.contact_note.value|default:'' }}</textarea>
+                    {% if form.contact_note.errors %}
+                        <div class="text-danger">
+                            {% for error in form.contact_note.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
               <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="agree-to-policy" required>
                   <label class="form-check-label" for="agree-to-policy" style="font-size: 12px;">
@@ -40,6 +69,8 @@ Bei Fragen, Anmerkungen oder Problemen, die du durch meine „FAQ” - Seite nic
                       Ich habe diesen Hinweis gelesen.*
                   </label>
               </div>
+              <div class="g-recaptcha" data-sitekey="6Ld4Y5wqAAAAAC3m4hKK897_ZVmgqhmBbBlqs4gd"></div>
+
               <div class="col-12 mt-0">
                 <br>
                 <button type="submit" class="btn btn-custom-pink">Senden</button>
@@ -52,6 +83,7 @@ Bei Fragen, Anmerkungen oder Problemen, die du durch meine „FAQ” - Seite nic
       </div>
     </div>
   </div>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <!-- ========================= SECTION  END// ========================= -->
 
