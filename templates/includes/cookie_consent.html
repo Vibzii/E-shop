@@ -1,0 +1,263 @@
+<style>
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f8f9fa; /* Bootstrap light background */
+    padding: 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* Higher than most modals */
+    display: none; /* Initially hidden */
+}
+
+.cookie-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.cookie-content p {
+    font-size: 14px;
+    color: #212529; /* Bootstrap text color */
+}
+
+.cookie-options {
+    margin: 15px 0;
+    text-align: left;
+}
+
+.cookie-options label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.cookie-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.cookie-buttons .btn {
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+.cookie-banner-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #343a40; /* Bootstrap dark text */
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.cookie-buttons .btn-primary {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    color: white;
+    border: none;
+}
+
+.cookie-buttons .btn-outline-secondary {
+    background: linear-gradient(45deg, #ffffff, #e9ecef);
+    color: #343a40;
+    border: 1px solid #ced4da;
+}
+
+.cookie-options {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ced4da; /* Light border for better separation */
+    border-radius: 8px;
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+.cookie-options-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cookie-options-header .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #343a40; /* Darker text color */
+}
+
+.cookie-options-header .btn-help {
+    font-size: 12px;
+    padding: 5px 10px;
+    background: linear-gradient(45deg, #ff7f50, #ff4500); /* Vibrant orange gradient */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cookie-options-header .btn-help:hover {
+    background: #ff4500; /* Solid orange on hover */
+}
+
+.cookie-options label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.cookie-options label input {
+    margin-right: 8px;
+}
+
+.cookie-options label span {
+    display: block;
+    font-size: 12px;
+    color: #6c757d; /* Muted text for explanations */
+    margin-top: 4px;
+}
+
+.cookie-options .essential {
+    font-weight: bold;
+    color: #6c757d; /* Bootstrap success color */
+}
+</style>
+
+
+<div id="cookie-consent" class="cookie-banner" style="display: none;">
+    <div class="cookie-content">
+        <div class="cookie-banner-title">Datenschutzeinstellungen</div>
+        <p>Wir benötigen Ihre Zustimmung, bevor Sie unsere Website weiter besuchen können.
+Wenn Sie unter 16 Jahre alt sind und Ihre Zustimmung zu freiwilligen Diensten geben möchten, müssen Sie Ihre Erziehungsberechtigten um Erlaubnis bitten.
+Wir verwenden Cookies und andere Technologien auf unserer Website. Einige von ihnen sind essenziell, während andere uns helfen, diese Website und Ihre Erfahrung zu verbessern. Weitere Informationen über die Verwendung Ihrer Daten finden Sie in unserer <a href="{% url 'faq' %}">Datenschutzerklärung</a>.</p>
+        <div class="cookie-options">
+
+                <label class="essential">
+                    <input type="checkbox" id="essential-consent" name="essential" checked disabled>
+                    Essenziell<br>
+                    <span>TEssenzielle Cookies ermöglichen grundlegende Funktionen und sind für die einwandfreie Funktion der Website erforderlich.</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="analytics-consent" name="analytics">
+                    Statistics<br>
+                    <span>Statistik Cookies erfassen Informationen anonym. Diese Informationen helfen uns zu verstehen, wie unsere Besucher unsere Website nutzen.</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="recaptcha-consent" name="recaptcha">
+                    reCAPTCHA<br>
+                    <span>Diese Website benutzt reCAPTCHA, um Spam zu verhindern.</span>
+                </label>
+                <button class="btn btn-secondary" onclick="savePreferences()">Speichern</button>
+            </div>
+        <div class="cookie-buttons">
+            <button class="btn btn-primary" onclick="acceptAllCookies()">Alle akzeptieren</button>
+
+            <button class="btn btn-outline-secondary" onclick="declineAll()">Nur essenzielle Cookies akzeptieren</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const COOKIE_TYPES = {
+    ANALYTICS: 'analytics',
+    RECAPTCHA: 'recaptcha'
+};
+
+function showCookieConsent() {
+    if (!localStorage.getItem('cookieConsent')) {
+        document.getElementById('cookie-consent').style.display = 'block';
+    }
+}
+
+function loadPreferences() {
+    const preferences = JSON.parse(localStorage.getItem('cookieConsent') || '{}');
+    document.getElementById('analytics-consent').checked = preferences[COOKIE_TYPES.ANALYTICS] || false;
+    document.getElementById('recaptcha-consent').checked = preferences[COOKIE_TYPES.RECAPTCHA] || false;
+    applyPreferences(preferences);
+}
+
+function savePreferences() {
+    const preferences = {
+        [COOKIE_TYPES.ANALYTICS]: document.getElementById('analytics-consent').checked,
+        [COOKIE_TYPES.RECAPTCHA]: document.getElementById('recaptcha-consent').checked
+    };
+    localStorage.setItem('cookieConsent', JSON.stringify(preferences));
+    document.getElementById('cookie-consent').style.display = 'none';
+    applyPreferences(preferences);
+}
+
+function acceptAllCookies() {
+    const preferences = {
+        [COOKIE_TYPES.ANALYTICS]: true,
+        [COOKIE_TYPES.RECAPTCHA]: true
+    };
+    localStorage.setItem('cookieConsent', JSON.stringify(preferences));
+    document.getElementById('cookie-consent').style.display = 'none';
+    applyPreferences(preferences);
+}
+
+function declineAll() {
+    const preferences = {
+        [COOKIE_TYPES.ANALYTICS]: false,
+        [COOKIE_TYPES.RECAPTCHA]: false
+    };
+    localStorage.setItem('cookieConsent', JSON.stringify(preferences));
+    document.getElementById('cookie-consent').style.display = 'none';
+    applyPreferences(preferences);
+}
+
+function applyPreferences(preferences) {
+    if (preferences[COOKIE_TYPES.ANALYTICS]) {
+        loadGoogleAnalytics();
+    }
+    if (preferences[COOKIE_TYPES.RECAPTCHA]) {
+        loadReCaptcha();
+    }
+}
+
+function loadGoogleAnalytics() {
+    // Google Analytics implementation (same as before)
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'YOUR-GA-ID', 'auto');
+    ga('send', 'pageview');
+}
+
+function loadReCaptcha() {
+    // Load reCAPTCHA script
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js';
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+}
+
+// Function to check if reCAPTCHA is allowed before form submission
+function validateReCaptchaConsent() {
+    const preferences = JSON.parse(localStorage.getItem('cookieConsent') || '{}');
+    if (!preferences[COOKIE_TYPES.RECAPTCHA]) {
+        alert('Bitte  akzeptieren Sie die reCAPTCHA Cookies, um die Nachricht zu versenden.');
+        document.getElementById('cookie-consent').style.display = 'block';
+        return false;
+    }
+    return true;
+}
+
+// Check consent status on page load
+document.addEventListener('DOMContentLoaded', function() {
+    showCookieConsent();
+    loadPreferences();
+});
+</script>
+
+
