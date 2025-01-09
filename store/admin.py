@@ -24,7 +24,7 @@ class VariationInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("product_name", 'price', 'shipping', 'category', 'modified_date', 'is_available')
+    list_display = ("product_name", 'price', 'shipping', 'category', 'article_nummer', 'modified_date', 'is_available')
     prepopulated_fields = {'slug': ('product_name',)}
     inlines = [VariationInline, ProductGalleryInline]
 

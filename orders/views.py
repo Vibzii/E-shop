@@ -130,7 +130,7 @@ def payment_product(request):
                 'business': settings.PAYPAL_RECEIVER_EMAIL,
                 'custom': custom_value,
                 'amount': grand_total,
-                'item_name': item_name_str,
+                'item_name': order_number,
                 'invoice': str(uuid.uuid4()),  # Ensure this is a string
                 'currency_code': 'EUR',
                 "item_number": order_number,

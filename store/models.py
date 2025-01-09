@@ -11,6 +11,7 @@ class Product(models.Model):
     description = models.TextField(max_length=1000, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     shipping = models.DecimalField(max_digits=10, decimal_places=2)
+    article_nummer = models.CharField(max_length=25, default="0000")
     images = models.ImageField(upload_to='photos/products')
     is_available = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
